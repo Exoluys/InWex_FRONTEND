@@ -4,10 +4,15 @@ import { useEffect } from "react"
 
 export default function ScrollOnRefresh() {
     useEffect(() => {
-        const hash = window.location.hash
-        if (!hash) return
+        const lastSection = sessionStorage.getItem("lastScrollPosition")
 
-        const target = document.querySelector(hash)
+        window.scrollTo(0, 0)
+
+        if (!lastSection) return
+
+        if (lastSection === "home") return
+
+        const target = document.getElementById(lastSection)
         if (!target) return
 
         setTimeout(() => {
@@ -15,7 +20,7 @@ export default function ScrollOnRefresh() {
                 behavior: "smooth",
                 block: "start",
             })
-        }, 100)
+        }, 300)
     }, [])
 
     return null
