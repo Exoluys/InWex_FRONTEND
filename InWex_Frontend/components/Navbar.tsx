@@ -12,7 +12,7 @@ import Image from "next/image"
 
 const Navbar = () => {
     return (
-        <header className="h-20 w-full">
+        <header className="h-20 w-full bg-black/60 backdrop-blur-sm">
             <div className="h-full w-full max-w-7xl mx-auto flex items-center justify-between">
                 {/* Logo */}
                 <Link href="/" className="text-xl font-semibold">
@@ -23,21 +23,21 @@ const Navbar = () => {
                 <NavigationMenu>
                     <NavigationMenuList>
                         <NavigationMenuItem>
-                            <NavigationMenuLink asChild>
+                            <Button variant="ghost" asChild>
                                 <Link href="#features" className="px-4 py-2">Features</Link>
-                            </NavigationMenuLink>
+                            </Button>
                         </NavigationMenuItem>
 
                         <NavigationMenuItem>
-                            <NavigationMenuLink asChild>
+                            <Button variant="ghost" asChild>
                                 <Link href="#about" className="px-4 py-2">About</Link>
-                            </NavigationMenuLink>
+                            </Button>
                         </NavigationMenuItem>
 
                         <NavigationMenuItem>
-                            <NavigationMenuLink asChild>
+                            <Button variant="ghost" asChild>
                                 <Link href="#contact" className="px-4 py-2">Contact</Link>
-                            </NavigationMenuLink>
+                            </Button>
                         </NavigationMenuItem>
                     </NavigationMenuList>
                 </NavigationMenu>
