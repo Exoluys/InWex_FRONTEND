@@ -121,6 +121,29 @@ body {
     --sidebar-ring: oklch(0.556 0 0);
 }
 
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--color-background);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: oklch(from var(--primary) calc(l * 0.8) c h);
+}
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary) var(--background);
+}
+
 @layer base {
     * {
         @apply border-border outline-ring/50;
