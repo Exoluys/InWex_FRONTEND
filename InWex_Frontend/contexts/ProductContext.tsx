@@ -47,6 +47,12 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
 
     useEffect(() => {
         fetchProducts()
+
+        const interval = setInterval(() => {
+            fetchProducts()
+        }, 50 * 60 * 1000)
+
+        return () => clearInterval(interval)
     }, [])
 
     return (

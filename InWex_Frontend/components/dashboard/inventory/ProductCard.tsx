@@ -16,13 +16,12 @@ type ProductCardProps = {
 export const ProductCard = ({ product }: ProductCardProps) => {
     return (
         <Card className="w-80 rounded-xl overflow-hidden bg-[#1E1E1E] p-0 border-none">
-            <div className="h-60 bg-zinc-200 flex items-center justify-center">
+            <div className="relative h-60 bg-zinc-200 flex items-center justify-center">
                 <Image
                     src={product.image}
                     alt={product.name}
-                    width={80}
-                    height={80}
-                    className="opacity-60"
+                    fill
+                    className="object-contain"
                 />
             </div>
 
