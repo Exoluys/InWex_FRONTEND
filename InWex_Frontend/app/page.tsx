@@ -14,7 +14,7 @@ export default function Home() {
                 <Navbar />
             </div>
 
-            <section id="home" className="relative h-screen w-full overflow-hidden">
+            <section id="home" className="relative h-screen w-full overflow-hidden scroll-mt-24">
                 <Image
                     src="/landingPage.jpg"
                     alt="Landing Page Background"

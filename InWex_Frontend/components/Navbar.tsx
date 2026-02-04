@@ -15,28 +15,54 @@ const Navbar = () => {
         <header className="h-20 w-full bg-black/60 backdrop-blur-sm">
             <div className="h-full w-full max-w-7xl mx-auto flex items-center justify-between">
                 {/* Logo */}
-                <Link href="/" className="text-xl font-semibold">
+                <div
+                    role="button"
+                    tabIndex={0}
+                    className="cursor-pointer"
+                    onClick={() => {
+                        document.getElementById("home")
+                            ?.scrollIntoView({ behavior: "smooth" })
+                    }}
+                >
                     <Image src="/logo/InwexUpdatedTransparent.png" alt="InWex Logo" width={80} height={80} />
-                </Link>
+                </div>
 
                 {/* Navigation Links */}
                 <NavigationMenu>
                     <NavigationMenuList>
                         <NavigationMenuItem>
-                            <Button variant="ghost" asChild>
-                                <Link href="#features" className="px-4 py-2">Features</Link>
+                            <Button
+                                variant="ghost"
+                                onClick={() => {
+                                    document.getElementById("features")
+                                        ?.scrollIntoView({ behavior: "smooth" })
+                                }}
+                            >
+                                Features
                             </Button>
                         </NavigationMenuItem>
 
                         <NavigationMenuItem>
-                            <Button variant="ghost" asChild>
-                                <Link href="#about" className="px-4 py-2">About</Link>
+                            <Button
+                                variant="ghost"
+                                onClick={() => {
+                                    document.getElementById("about")
+                                        ?.scrollIntoView({ behavior: "smooth" })
+                                }}
+                            >
+                                About
                             </Button>
                         </NavigationMenuItem>
 
                         <NavigationMenuItem>
-                            <Button variant="ghost" asChild>
-                                <Link href="#contact" className="px-4 py-2">Contact</Link>
+                            <Button
+                                variant="ghost"
+                                onClick={() => {
+                                    document.getElementById("contact")
+                                        ?.scrollIntoView({ behavior: "smooth" })
+                                }}
+                            >
+                                Contact
                             </Button>
                         </NavigationMenuItem>
                     </NavigationMenuList>
