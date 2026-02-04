@@ -5,7 +5,6 @@ import Contact from "@/components/landing/Contact";
 import Features from "@/components/landing/Features";
 import Hero from "@/components/landing/Hero";
 import Navbar from "@/components/Navbar";
-import Image from "next/image";
 
 export default function Home() {
     return (
@@ -15,16 +14,6 @@ export default function Home() {
             </div>
 
             <section id="home" className="relative h-screen w-full overflow-hidden scroll-mt-24">
-                <Image
-                    src="/landingPage.jpg"
-                    alt="Landing Page Background"
-                    fill
-                    priority
-                    className="object-cover"
-                />
-
-                <div className="absolute inset-0 bg-black/70" />
-
                 <Hero />
             </section>
 
