@@ -26,7 +26,6 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
         setError(null)
         try {
             const token = localStorage.getItem('token')
-            console.log("Fetched token:", token)
 
             if (!token) throw new Error("No authentication token found")
 

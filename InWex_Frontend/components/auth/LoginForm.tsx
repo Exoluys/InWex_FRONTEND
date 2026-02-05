@@ -11,6 +11,7 @@ import axios from 'axios'
 import { api } from '@/lib/api'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
+import Link from 'next/link'
 
 type LoginFormProps = {
     onSwitch: () => void
@@ -88,6 +89,9 @@ const LoginForm = ({ onSwitch }: LoginFormProps) => {
                                     <FormControl>
                                         <Input type='password' autoComplete="current-password" placeholder='••••••••' {...field} className='pl-4 border-none' />
                                     </FormControl>
+                                    <div className='flex justify-end'>
+                                        <Link href="/auth/reset-password" className='text-sm text-muted-foreground hover:text-primary transition-colors'>Forgot Password?</Link>
+                                    </div>
                                     <FormMessage className="transition-opacity duration-200" />
                                 </FormItem>
                             )}
