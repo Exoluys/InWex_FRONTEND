@@ -2,38 +2,47 @@
 
 import { Roles, UserData } from "@/lib/types"
 import { useRouter } from "next/navigation"
-import { createContext, useCallback, useContext, useState } from "react"
+import { createContext, useCallback, useContext, useState, useEffect } from "react"
 
 type AuthContextType = {
     user: UserData | null
     role: Roles | null
     isLoading: boolean
+    login: (userData: UserData, token: string) => void
     logout: () => void
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
-const getUserFromStorage = (): UserData | null => {
-    if (typeof window === "undefined") return null
-
-    try {
-        const stored = localStorage.getItem("UserData")
-        return stored ? JSON.parse(stored) : null
-    } catch (error) {
-        console.error("Error parsing user data:", error)
-        return null
-    }
-}
-
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-    const [user, setUser] = useState<UserData | null>(getUserFromStorage)
-    const [isLoading, setIsLoading] = useState(false)
+    const [user, setUser] = useState<UserData | null>(null)
+    const [isLoading, setIsLoading] = useState(true)
     const router = useRouter()
+
+    useEffect(() => {
+        try {
+            const stored = localStorage.getItem("UserData")
+            if (stored) {
+                setUser(JSON.parse(stored))
+            }
+        } catch (error) {
+            console.error("Error parsing user data:", error)
+        } finally {
+            setIsLoading(false)
+        }
+    }, [])
+
+    const login = useCallback((userData: UserData, token: string) => {
+        localStorage.setItem("UserData", JSON.stringify(userData))
+        localStorage.setItem("token", token)
+        setUser(userData)
+    }, [])
 
     const logout = useCallback(() => {
         localStorage.removeItem("UserData")
+        localStorage.removeItem("token")
         setUser(null)
-        router.push("/login")
+        router.push("/auth")
     }, [router])
 
     return (
@@ -42,6 +51,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 user,
                 role: user?.roles || null,
                 isLoading,
+                login,
                 logout
             }}
         >

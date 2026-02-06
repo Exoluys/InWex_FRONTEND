@@ -12,6 +12,7 @@ import { api } from '@/lib/api'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import Link from 'next/link'
+import { useAuth } from '@/contexts/AuthContext'
 
 type LoginFormProps = {
     onSwitch: () => void
@@ -19,6 +20,7 @@ type LoginFormProps = {
 
 const LoginForm = ({ onSwitch }: LoginFormProps) => {
     const router = useRouter()
+    const { login } = useAuth()
 
     const form = useForm<LoginValues>({
         resolver: zodResolver(loginSchema),
@@ -35,11 +37,8 @@ const LoginForm = ({ onSwitch }: LoginFormProps) => {
             const res = await api.post("/accounts/login", data)
             toast.success("Login successful!")
 
-            // UserData
-            localStorage.setItem("UserData", JSON.stringify(res.data))
-
-            // Token
-            localStorage.setItem("token", res.data.token)
+            // ✅ Update context AND localStorage
+            login(res.data, res.data.token)
 
             router.push("/dashboard")
         }

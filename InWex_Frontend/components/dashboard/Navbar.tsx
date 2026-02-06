@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState } from "react"
+import React from "react"
 import { Bell, MessageSquareMore } from "lucide-react"
 
 import { Button } from "../ui/button"
@@ -15,32 +15,22 @@ import {
     CardHeader,
     CardContent,
 } from "../ui/card"
+import { useAuth } from "@/contexts/AuthContext"
 
 interface NavbarProps {
     leftContent?: React.ReactNode
 }
 
 const Navbar = ({ leftContent }: NavbarProps) => {
-    const [userData, setUserData] = useState(() => {
-        if (typeof window !== "undefined") {
-            const stored = localStorage.getItem("UserData")
-            if (stored) {
-                return JSON.parse(stored)
-            }
-        }
-        return { fullname: "", avatar: "", roles: {} }
-    })
+    const { user, role } = useAuth()
 
-    const [userRole] = useState(() => {
-        if (typeof window !== "undefined") {
-            const stored = localStorage.getItem("UserData")
-            if (stored) {
-                const data = JSON.parse(stored)
-                return Object.entries(data.roles || {}).find(([_, value]) => value)?.[0]?.replace(/_/g, " ") || "Unknown"
-            }
-        }
-        return "Unknown"
-    })
+    const userRole = role?.manager
+        ? "Manager"
+        : role?.warehouse_staff
+            ? "Warehouse Staff"
+            : "User"
+
+    if (!user) return null
 
     return (
         <div className="flex items-center justify-between w-full px-4">
@@ -58,9 +48,9 @@ const Navbar = ({ leftContent }: NavbarProps) => {
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Avatar className="h-9 w-9 cursor-pointer">
-                            <AvatarImage src={userData.avatar} />
+                            <AvatarImage src={user.avatar} />
                             <AvatarFallback>
-                                {userData.fullname?.slice(0, 2).toUpperCase()}
+                                {user.fullname?.slice(0, 2).toUpperCase() || "U"}
                             </AvatarFallback>
                         </Avatar>
                     </DropdownMenuTrigger>
@@ -69,16 +59,16 @@ const Navbar = ({ leftContent }: NavbarProps) => {
                         <Card className="w-72 border-none shadow-none">
                             <CardHeader className="flex flex-row items-center gap-3">
                                 <Avatar className="h-10 w-10">
-                                    <AvatarImage src={userData.avatar} />
+                                    <AvatarImage src={user.avatar} />
                                     <AvatarFallback>
-                                        {userData.fullname?.slice(0, 2).toUpperCase()}
+                                        {user.fullname?.slice(0, 2).toUpperCase() || "U"}
                                     </AvatarFallback>
                                 </Avatar>
 
                                 <div>
-                                    <p className="text-sm font-medium">{userData.fullname}</p>
+                                    <p className="text-sm font-medium">{user.fullname}</p>
                                     <p className="text-xs text-muted-foreground">
-                                        {userData.email}
+                                        {user.email}
                                     </p>
                                 </div>
                             </CardHeader>

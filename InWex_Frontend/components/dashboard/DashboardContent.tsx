@@ -8,8 +8,11 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import Navbar from "@/components/dashboard/Navbar";
+import { useAuth } from "@/contexts/AuthContext";
 
 const DashBoardContent = () => {
+    const { user } = useAuth()
+
     const [today, setToday] = useState(() => {
         const current = new Date()
         const weekday = current.toLocaleString("en-US", { weekday: "short" });
@@ -17,15 +20,6 @@ const DashBoardContent = () => {
         const month = current.toLocaleString("en-US", { month: "short" });
 
         return `${weekday}, ${day} ${month}`;
-    })
-    const [userData, setUserData] = useState(() => {
-        if (typeof window !== "undefined") {
-            const stored = localStorage.getItem("UserData")
-            if (stored) {
-                return JSON.parse(stored)
-            }
-        }
-        return { fullname: "" }
     })
 
     const [selected, setSelected] = useState("This month")
@@ -60,7 +54,7 @@ const DashBoardContent = () => {
             <main className="mt-12">
                 <div className="flex justify-between">
                     <div>
-                        <h1 className="text-4xl font-bold">Hello, {userData.fullname}!</h1>
+                        <h1 className="text-4xl font-bold">Hello, {user?.fullname || ""}!</h1>
                         <p>Hope you&#39;re having a great day.</p>
                     </div>
                     <div className="flex items-center space-x-4">

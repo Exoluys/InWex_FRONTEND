@@ -18,15 +18,11 @@ import {
     LogOut,
 } from "lucide-react"
 import { managerItems, staffItems } from "../config/sidebar/sidebarItems"
-
-const bottomItems = [
-    { title: "Settings", url: "/settings", icon: Settings },
-    { title: "Log out", url: "/logout", icon: LogOut },
-]
+import { useAuth } from "@/contexts/AuthContext"
 
 const AppSidebar = ({ role }: { role: string }) => {
     const pathname = usePathname()
-
+    const { logout } = useAuth()
     const mainItems = role === "manager" ? managerItems : staffItems
 
     return (
@@ -72,22 +68,23 @@ const AppSidebar = ({ role }: { role: string }) => {
             {/* Bottom */}
             <SidebarFooter className="pb-10">
                 <SidebarMenu>
-                    {bottomItems.map((item) => (
-                        <SidebarMenuItem key={item.title}>
-                            <SidebarMenuButton asChild>
-                                <Link
-                                    href={item.url}
-                                    className="
-                                        flex text-lg! items-center gap-5 px-4 py-7
-                                        text-neutral-400
-                                        hover:text-white"
-                                >
-                                    <item.icon className="h-5! w-5! ml-7" />
-                                    <span>{item.title}</span>
-                                </Link>
-                            </SidebarMenuButton>
-                        </SidebarMenuItem>
-                    ))}
+                    <SidebarMenuItem className="mb-3">
+                        <SidebarMenuButton
+                            className="flex text-lg! items-center gap-5 px-4 py-7 transition-colors text-neutral-400 hover:text-white"
+                        >
+                            <Settings className="h-5! w-5! ml-7" />
+                            <span>Settings</span>
+                        </SidebarMenuButton>
+                    </SidebarMenuItem>
+                    <SidebarMenuItem className="mb-3">
+                        <SidebarMenuButton
+                            onClick={logout}
+                            className="flex text-lg! items-center gap-5 px-4 py-7 transition-colors text-neutral-400 hover:text-white"
+                        >
+                            <LogOut className="h-5! w-5! ml-7" />
+                            <span>Log Out</span>
+                        </SidebarMenuButton>
+                    </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarFooter>
         </Sidebar>
