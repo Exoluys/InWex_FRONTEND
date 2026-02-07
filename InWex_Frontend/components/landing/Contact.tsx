@@ -27,13 +27,13 @@ const Contact = () => {
             {
                 name: "name",
                 type: "text",
-                placeholder: "ENTER YOUR NAME*",
+                placeholder: "ENTER YOUR NAME *",
                 autocomplete: "name",
             },
             {
                 name: "email",
                 type: "email",
-                placeholder: "ENTER YOUR EMAIL*",
+                placeholder: "ENTER YOUR EMAIL *",
                 autocomplete: "email",
             },
         ]
@@ -42,6 +42,7 @@ const Contact = () => {
         try {
             await api.post("/accounts/support", data)
             toast.success("Request Sent")
+            form.reset()
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
@@ -99,7 +100,7 @@ const Contact = () => {
                             <FormItem>
                                 <FormControl>
                                     <textarea
-                                        placeholder="YOUR MESSAGE*"
+                                        placeholder="YOUR MESSAGE *"
                                         className="w-full min-h-30 py-3 px-3 border-0 border-l-2 border-b-2 border-white/60 bg-transparent! rounded-none resize-none focus:outline-none placeholder:text-gray-400 placeholder:text-xs"
                                         {...field}
                                     />
