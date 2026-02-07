@@ -1,129 +1,125 @@
-import { useState } from "react";
-import { Card, CardContent } from "../ui/card";
 import { Input } from "../ui/input";
-import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "../ui/form";
+import { useForm } from "react-hook-form";
+import { contactSchema, ContactValues } from "@/lib/schemas/validation/contact.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
+import { api } from "@/lib/api";
+import { toast } from "sonner";
 
 const Contact = () => {
-    const [formData, setFormData] = useState({
-        name: "",
-        email: "",
-        message: "",
-    });
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [submitStatus, setSubmitStatus] = useState<"success" | "error" | null>(null);
+    const form = useForm<ContactValues>({
+        resolver: zodResolver(contactSchema),
+        defaultValues: {
+            "name": "",
+            "email": "",
+            "message": ""
+        },
+    })
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setIsSubmitting(true);
-        setSubmitStatus(null);
+    const formElements: {
+        name: keyof ContactValues,
+        type: string,
+        placeholder: string,
+        autocomplete: string
+    }[] = [
+            {
+                name: "name",
+                type: "text",
+                placeholder: "ENTER YOUR NAME*",
+                autocomplete: "name",
+            },
+            {
+                name: "email",
+                type: "email",
+                placeholder: "ENTER YOUR EMAIL*",
+                autocomplete: "email",
+            },
+        ]
 
-        // Simulate form submission
-        setTimeout(() => {
-            setIsSubmitting(false);
-            setSubmitStatus("success");
-            setFormData({ name: "", email: "", message: "" });
-
-            // Clear success message after 3 seconds
-            setTimeout(() => setSubmitStatus(null), 3000);
-        }, 1000);
-    };
+    const onSubmit = async (data: ContactValues) => {
+        try {
+            await api.post("/accounts/support", data)
+            toast.success("Request Sent")
+        }
+        catch (error) {
+            if (axios.isAxiosError(error)) {
+                console.log(error.response?.data?.message)
+                toast.error(
+                    error.response?.data?.message ||
+                    "Invalid Request"
+                )
+            }
+            else {
+                toast.error("Something went wrong")
+            }
+        }
+    }
 
     return (
-        <div className="mx-auto max-w-4xl px-6 w-full py-24">
+        <div className="mx-auto max-w-4xl px-6 gap-20 w-full py-24">
             {/* Section Header */}
             <div className="mb-12 text-center">
                 <h2 className="text-3xl md:text-4xl font-bold">Get In Touch</h2>
                 <p className="mt-4 text-muted-foreground max-w-2xl mx-auto">
-                    Have questions about our warehouse management system? We&39;d love to
+                    Have questions about our warehouse management system? We&#39;d love to
                     hear from you.
                 </p>
             </div>
 
             {/* Contact Form */}
-            <Card>
-                <CardContent className="pt-6">
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                        <div>
-                            <label
-                                htmlFor="name"
-                                className="block text-sm font-medium mb-2"
-                            >
-                                Name
-                            </label>
-                            <Input
-                                id="name"
-                                type="text"
-                                placeholder="Your name"
-                                value={formData.name}
-                                onChange={(e) =>
-                                    setFormData({ ...formData, name: e.target.value })
-                                }
-                                required
-                            />
-                        </div>
-
-                        <div>
-                            <label
-                                htmlFor="email"
-                                className="block text-sm font-medium mb-2"
-                            >
-                                Email
-                            </label>
-                            <Input
-                                id="email"
-                                type="email"
-                                placeholder="your.email@example.com"
-                                value={formData.email}
-                                onChange={(e) =>
-                                    setFormData({ ...formData, email: e.target.value })
-                                }
-                                required
-                            />
-                        </div>
-
-                        <div>
-                            <label
-                                htmlFor="message"
-                                className="block text-sm font-medium mb-2"
-                            >
-                                Message
-                            </label>
-                            <Textarea
-                                id="message"
-                                placeholder="Tell us how we can help you..."
-                                rows={6}
-                                value={formData.message}
-                                onChange={(e) =>
-                                    setFormData({ ...formData, message: e.target.value })
-                                }
-                                required
-                            />
-                        </div>
-
-                        {submitStatus === "success" && (
-                            <div className="bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-200 p-4 rounded-md">
-                                Thank you for your message! We&39;ll get back to you soon.
-                            </div>
-                        )}
-
-                        {submitStatus === "error" && (
-                            <div className="bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-200 p-4 rounded-md">
-                                Something went wrong. Please try again.
-                            </div>
-                        )}
-
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full max-w-sm mx-auto">
+                    {formElements.map(({ name, type, placeholder, autocomplete }) => (
+                        <FormField
+                            key={name}
+                            control={form.control}
+                            name={name}
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormControl>
+                                        <Input
+                                            type={type}
+                                            placeholder={placeholder}
+                                            autoComplete={autocomplete}
+                                            className="w-full py-3 px-3 border-0 border-l-2 border-b-2 border-white/60 bg-transparent! rounded-none focus-visible:ring-0 placeholder:text-gray-400 placeholder:text-xs"
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    ))}
+                    <FormField
+                        control={form.control}
+                        name="message"
+                        render={(({ field }) => (
+                            <FormItem>
+                                <FormControl>
+                                    <textarea
+                                        placeholder="YOUR MESSAGE*"
+                                        className="w-full min-h-30 py-3 px-3 border-0 border-l-2 border-b-2 border-white/60 bg-transparent! rounded-none resize-none focus:outline-none placeholder:text-gray-400 placeholder:text-xs"
+                                        {...field}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        ))}
+                    />
+                    <div className="flex items-center justify-center mt-4">
                         <Button
+                            variant="ghost"
                             type="submit"
-                            size="lg"
-                            className="w-full"
-                            disabled={isSubmitting}
+                            disabled={form.formState.isSubmitting}
+                            className="px-8 py-2 text-sm font-semibold border-0 border-l-2 border-r-2 border-white/60 rounded-none hover:bg-transparent! tracking-wider transition-colors cursor-pointer"
                         >
-                            {isSubmitting ? "Sending..." : "Send Message"}
+                            {form.formState.isSubmitting ? "SUBMITTING..." : "SUBMIT"}
                         </Button>
-                    </form>
-                </CardContent>
-            </Card>
+                    </div>
+                </form>
+            </Form>
         </div>
     )
 }

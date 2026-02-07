@@ -1,6 +1,6 @@
 "use client"
 
-import { loginSchema, LoginValues } from '@/lib/validation/login.schema'
+import { loginSchema, LoginValues } from '@/lib/schemas/validation/login.schema'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -32,12 +32,10 @@ const LoginForm = ({ onSwitch }: LoginFormProps) => {
     })
 
     const onSubmit = async (data: LoginValues) => {
-        console.log(data)
         try {
             const res = await api.post("/accounts/login", data)
             toast.success("Login successful!")
 
-            // ✅ Update context AND localStorage
             login(res.data, res.data.token)
 
             router.push("/dashboard")

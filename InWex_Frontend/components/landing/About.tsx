@@ -20,7 +20,7 @@ const About = () => {
                         reduce costs, and improve operational efficiency.
                     </p>
                     <p className="text-muted-foreground text-lg">
-                        Whether you&39;re running a small warehouse or managing multiple
+                        Whether you&#39;re running a small warehouse or managing multiple
                         facilities, our system scales with your needs and provides the
                         tools you need to succeed.
                     </p>

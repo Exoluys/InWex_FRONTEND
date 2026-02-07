@@ -1,6 +1,6 @@
 "use client"
 
-import { ResetPasswordFormType, resetPasswordSchema } from "@/lib/validation/reset-password.schema"
+import { ResetPasswordFormType, resetPasswordSchema } from "@/lib/schemas/validation/reset-password.schema"
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form"
 import { zodResolver } from "@hookform/resolvers/zod"

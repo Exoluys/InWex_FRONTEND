@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form"
 import { Input } from "../ui/input"
 import { Button } from "../ui/button"
-import { SignupEmpValues, signupEmpSchema } from "@/lib/validation/emp-signup.schema"
+import { SignupEmpValues, signupEmpSchema } from "@/lib/schemas/validation/emp-signup.schema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
@@ -29,7 +29,6 @@ const SignupAsEmp = ({ onSwitch }: SignupFormProps) => {
                 const res = await api.get("/accounts/companies")
 
                 setOrgs(res.data)
-                console.log("Organizations fetched: ", res.data)
             }
             catch (error) {
                 if (axios.isAxiosError(error)) {
@@ -100,10 +99,8 @@ const SignupAsEmp = ({ onSwitch }: SignupFormProps) => {
     }
 
     const onSubmit = async (data: SignupEmpValues) => {
-        console.log(data)
         try {
-            const res = await api.post<SignupEmpResponse>("/accounts/register", data)
-            console.log("emp signup data:", res.data)
+            await api.post<SignupEmpResponse>("/accounts/register", data)
             router.push("/auth/verify")
         }
         catch (error) {
