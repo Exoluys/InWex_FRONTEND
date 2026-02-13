@@ -3,6 +3,7 @@
 import { api } from "@/lib/api"
 import { Product } from "@/lib/types"
 import { createContext, useContext, useEffect, useState } from "react"
+import { useAuth } from "./AuthContext"
 
 type ProductContextType = {
     products: Product[]
@@ -20,13 +21,13 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
     const [products, setProducts] = useState<Product[]>([])
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
+    const { user, isLoading: authLoading } = useAuth()
 
-    const fetchProducts = async () => {
-        setIsLoading(true)
+    const fetchProducts = async (showLoading = true) => {
+        if (showLoading) setIsLoading(true)
         setError(null)
         try {
             const token = localStorage.getItem('token')
-
             if (!token) throw new Error("No authentication token found")
 
             const res = await api.get('/products/get-products', {
@@ -40,19 +41,26 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
             setError(err instanceof Error ? err.message : "An error occurred")
         }
         finally {
-            setIsLoading(false)
+            if (showLoading) setIsLoading(false)
         }
     }
 
     useEffect(() => {
-        fetchProducts()
+        if (authLoading) return
+        if (user) {
+            fetchProducts(true)
 
-        const interval = setInterval(() => {
-            fetchProducts()
-        }, 50 * 60 * 1000)
+            const interval = setInterval(() => {
+                fetchProducts(false)
+            }, 50 * 60 * 1000)
 
-        return () => clearInterval(interval)
-    }, [])
+            return () => clearInterval(interval)
+        }
+        else {
+            setProducts([])
+            setError(null)
+        }
+    }, [user, authLoading])
 
     return (
         <ProductContext.Provider
