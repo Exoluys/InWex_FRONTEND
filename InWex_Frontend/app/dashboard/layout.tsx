@@ -11,7 +11,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
     if (isLoading) return <div>Loading...</div>
     if (!role) return null
 
-    const currentRole = role.manager ? 'manager' : role.warehouse_staff ? 'staff' : 'guest'
+    const currentRole = role.business ? 'business' : role.manager ? 'manager' : 'staff'
 
     return (
         <SidebarProvider>

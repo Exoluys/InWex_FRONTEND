@@ -4,6 +4,7 @@ import {
     ShoppingCart,
     Truck,
     Users,
+    Warehouse,
 } from "lucide-react"
 
 export const staffItems = [
@@ -16,4 +17,9 @@ export const staffItems = [
 export const managerItems = [
     ...staffItems,
     { title: "Staff", url: "/dashboard/staff", icon: Users },
+]
+
+export const businessItems = [
+    ...staffItems,
+    { title: "Warehouse", url: "/dashboard/warehouse", icon: Warehouse }
 ]

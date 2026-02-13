@@ -1,8 +1,11 @@
 "use client"
 
+import { api } from "@/lib/api"
 import { Roles, UserData } from "@/lib/types"
+import axios from "axios"
 import { useRouter } from "next/navigation"
 import { createContext, useCallback, useContext, useState, useEffect } from "react"
+import { toast } from "sonner"
 
 type AuthContextType = {
     user: UserData | null
@@ -38,11 +41,24 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setUser(userData)
     }, [])
 
-    const logout = useCallback(() => {
-        localStorage.removeItem("UserData")
-        localStorage.removeItem("token")
-        setUser(null)
-        router.push("/auth")
+    const logout = useCallback(async () => {
+        try {
+            await api.post("/accounts/logout")
+        }
+        catch (error) {
+            if (axios.isAxiosError(error)) {
+                toast.error(error.response?.data?.detail || "Logout Failed")
+            }
+            else {
+                toast.error("Unexpected error occurred")
+            }
+        }
+        finally {
+            localStorage.removeItem("UserData")
+            localStorage.removeItem("token")
+            setUser(null)
+            router.push("/auth")
+        }
     }, [router])
 
     return (

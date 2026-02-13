@@ -20,7 +20,6 @@ const SidePanel = ({ isSignup }: SidePanelProps) => {
                 alt="Side Panel Image"
                 fill
                 sizes="50vw"
-                quality={100}
                 className="object-cover object-bottom"
                 priority
             />

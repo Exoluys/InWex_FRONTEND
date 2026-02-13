@@ -17,19 +17,20 @@ import {
     Settings,
     LogOut,
 } from "lucide-react"
-import { managerItems, staffItems } from "../config/sidebar/sidebarItems"
+import { businessItems, managerItems, staffItems } from "../config/sidebar/sidebarItems"
 import { useAuth } from "@/contexts/AuthContext"
+import Image from "next/image"
 
 const AppSidebar = ({ role }: { role: string }) => {
     const pathname = usePathname()
     const { logout } = useAuth()
-    const mainItems = role === "manager" ? managerItems : staffItems
+    const mainItems = role === "business" ? businessItems : role === "manager" ? managerItems : staffItems
 
     return (
         <Sidebar className="border-none">
             {/* Logo */}
-            <SidebarHeader className="h-45 mt-20 flex items-center text-4xl font-light">
-                Logo
+            <SidebarHeader className="h-45 flex items-center text-4xl font-light mt-20 mr-3">
+                <Image src="/logo/InwexUpdatedTransparent.png" alt="InWex Logo" width={130} height={120} />
             </SidebarHeader>
 
             {/* Main */}

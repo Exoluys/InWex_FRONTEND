@@ -26,9 +26,9 @@ const Navbar = ({ leftContent }: NavbarProps) => {
 
     const userRole = role?.manager
         ? "Manager"
-        : role?.warehouse_staff
-            ? "Warehouse Staff"
-            : "User"
+        : role?.business
+            ? "Business"
+            : "Warehouse Staff"
 
     if (!user) return null
 
