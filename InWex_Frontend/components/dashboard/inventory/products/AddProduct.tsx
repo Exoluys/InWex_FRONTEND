@@ -84,15 +84,7 @@ const AddProduct = () => {
                                             className="w-full py-3 px-3 border-0 border-l-2 border-b-2 border-white/60 bg-transparent! rounded-none focus-visible:ring-0 placeholder:text-gray-400 placeholder:text-xs"
                                             {...field}
                                             value={field.value as string | number | undefined}
-                                            onChange={(e) =>
-                                                type === "number"
-                                                    ? field.onChange(
-                                                        e.target.value === ""
-                                                            ? undefined
-                                                            : Number(e.target.value)
-                                                    )
-                                                    : field.onChange(e)
-                                            }
+                                            onChange={(e) => field.onChange(e)}
                                         />
                                     </FormControl>
                                     <FormMessage />

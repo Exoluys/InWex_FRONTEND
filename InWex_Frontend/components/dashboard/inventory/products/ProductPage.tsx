@@ -9,8 +9,8 @@ import { useProduct } from "@/contexts/ProductContext"
 import { useRouter } from "next/navigation"
 
 const ProductPage = ({ product, category }: { product: Product, category: Category }) => {
-    const profit = product.selling_price - product.cost_price
-    const margin = ((profit / product.selling_price) * 100).toFixed(1)
+    const profit = Number(product.selling_price) - Number(product.cost_price)
+    const margin = ((profit / Number(product.selling_price)) * 100).toFixed(1)
     const { deleteProduct } = useProduct()
     const router = useRouter()
 

@@ -39,8 +39,8 @@ const UpdateProduct = ({ product }: { product: Product }) => {
                 category: String(category?.id),
                 unit_of_measure: product.unit_of_measure,
                 barcode: String(product.barcode),
-                cost_price: product.cost_price,
-                selling_price: product.selling_price,
+                cost_price: String(product.cost_price),
+                selling_price: String(product.selling_price),
                 description: product.description,
                 image: undefined,
             });
@@ -111,13 +111,7 @@ const UpdateProduct = ({ product }: { product: Product }) => {
                                                         ? field.value
                                                         : ""
                                             }
-                                            onChange={(e) =>
-                                                type === "number"
-                                                    ? field.onChange(
-                                                        e.target.value === "" ? "" : Number(e.target.value)
-                                                    )
-                                                    : field.onChange(e.target.value)
-                                            }
+                                            onChange={(e) => field.onChange(e.target.value)}
                                         />
                                     </FormControl>
                                     <FormMessage />

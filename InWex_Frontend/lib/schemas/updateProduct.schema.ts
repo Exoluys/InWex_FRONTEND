@@ -6,8 +6,8 @@ export const updateProductSchema = z.object({
     description: z.string().min(1, "Description is required"),
     unit_of_measure: z.string().min(1, "Unit is required"),
     barcode: z.string().min(1, "Barcode is required"),
-    cost_price: z.coerce.number().min(0, "Cost price must be positive"),
-    selling_price: z.coerce.number().min(0, "Selling price must be positive"),
+    cost_price: z.string().min(1, "Cost price is required"),
+    selling_price: z.string().min(1, "Selling price is required"),
     image: z.instanceof(File).optional(),
     category: z.string().min(1, "Category is required"),
 })
