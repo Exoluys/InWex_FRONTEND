@@ -3,10 +3,11 @@
 import { ProductCard } from "@/components/dashboard/inventory/ProductCard"
 import Navbar from "@/components/dashboard/Navbar";
 import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card";
 import { DropdownMenu, DropdownMenuItem, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import Searchbar from "@/components/ui/Searchbar"
 import { useProduct } from "@/contexts/ProductContext";
-import { ChevronDown, Ellipsis, Menu, Plus } from "lucide-react"
+import { AlertTriangle, ChevronDown, Ellipsis, Loader2, Menu, Plus } from "lucide-react"
 import { useState } from "react"
 
 const Inventory = () => {
@@ -85,17 +86,36 @@ const Inventory = () => {
                     </div>
                 </div>
                 {isLoading && (
-                    <div className="flex justify-center items-center py-20">
-                        <p className="text-lg text-muted-foreground">Loading products...</p>
+                    <div className="flex justify-center items-center py-24">
+                        <Card className="bg-transparent w-full max-w-sm border-none">
+                            <CardContent className="flex flex-col items-center gap-4 py-10 text-center">
+                                <div className="bg-zinc-800 rounded-full p-3">
+                                    <Loader2 className="h-6 w-6 text-zinc-400 animate-spin" />
+                                </div>
+                                <div className="space-y-1">
+                                    <p className="text-zinc-300 font-semibold text-lg">Loading Products</p>
+                                    <p className="text-zinc-500 text-sm">Please wait a moment...</p>
+                                </div>
+                            </CardContent>
+                        </Card>
                     </div>
                 )}
 
                 {error && (
-                    <div className="flex justify-center items-center py-20">
-                        <p className="text-lg text-red-500">{error}</p>
+                    <div className="flex justify-center items-center py-24">
+                        <Card className="bg-transparent w-full max-w-sm border-none">
+                            <CardContent className="flex flex-col items-center gap-4 py-10 text-center">
+                                <div className="bg-red-500/20 rounded-full p-3">
+                                    <AlertTriangle className="h-6 w-6 text-red-400" />
+                                </div>
+                                <div className="space-y-1">
+                                    <p className="text-red-400 font-semibold text-lg">Something went wrong</p>
+                                    <p className="text-red-400/70 text-sm">{error}</p>
+                                </div>
+                            </CardContent>
+                        </Card>
                     </div>
                 )}
-
                 {!isLoading && !error && (
                     <div className="flex flex-wrap gap-8">
                         {products.length > 0 ? (
