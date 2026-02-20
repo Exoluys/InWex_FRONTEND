@@ -30,7 +30,7 @@ const AppSidebar = ({ role }: { role: string }) => {
         <Sidebar className="border-none">
             {/* Logo */}
             <SidebarHeader className="h-45 flex items-center text-4xl font-light mt-20 mr-3">
-                <Image src="/logo/InwexUpdatedTransparent.png" alt="InWex Logo" width={130} height={120} />
+                <Image src="/logo/InwexUpdatedTransparent.png" alt="InWex Logo" width={130} height={130} priority />
             </SidebarHeader>
 
             {/* Main */}

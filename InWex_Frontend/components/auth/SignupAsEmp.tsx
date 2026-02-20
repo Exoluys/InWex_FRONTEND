@@ -165,7 +165,7 @@ const SignupAsEmp = ({ onSwitch }: SignupFormProps) => {
                                                 <SelectValue placeholder="Select Organization" />
                                             </SelectTrigger>
 
-                                            <SelectContent align="start" sideOffset={4} className="border-none" aria-placeholder="Select Organization">
+                                            <SelectContent align="start" className="border-none w-full" position="popper" aria-placeholder="Select Organization">
                                                 {orgs.map((org) => (
                                                     <SelectItem key={org.id} value={org.id.toString()}>{org.name}</SelectItem>
                                                 ))}

@@ -18,13 +18,20 @@ export type Product = {
     sku: string
     description: string
     unit_of_measure: string
-    barcode: number
-    cost_price: number
-    selling_price: number
+    barcode: string
+    cost_price: string
+    selling_price: string
     image: string
     stock: number
     created_at: string
     updated_at: string
     category: string
     owner: number
+    status: string
+}
+
+export type Category = {
+    id: number
+    name: string
+    description: string
 }

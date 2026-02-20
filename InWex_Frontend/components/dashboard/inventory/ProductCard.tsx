@@ -8,12 +8,15 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 import { Product } from "@/lib/types"
+import { useRouter } from "next/navigation"
 
 type ProductCardProps = {
     product: Product
 }
 
 export const ProductCard = ({ product }: ProductCardProps) => {
+    const router = useRouter()
+
     return (
         <Card className="w-80 rounded-xl overflow-hidden bg-[#1E1E1E] p-0 border-none">
             <div className="relative h-60 bg-zinc-200 flex items-center justify-center">
@@ -22,6 +25,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
                     alt={product.name}
                     fill
                     className="object-contain"
+                    priority
                 />
             </div>
 
@@ -49,8 +53,12 @@ export const ProductCard = ({ product }: ProductCardProps) => {
             </CardContent>
 
             <CardFooter className="px-4 pb-6 flex justify-end gap-2">
-                <Button size="lg" variant="secondary">Delete</Button>
-                <Button size="lg" variant="secondary">Update</Button>
+                <Button
+                    onClick={() => (router.push(`/dashboard/inventory/products/${product.id}`))}
+                    size="lg"
+                    variant="secondary">
+                    View Product
+                </Button>
             </CardFooter>
         </Card>
     )
