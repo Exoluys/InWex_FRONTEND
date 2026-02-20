@@ -1,23 +1,27 @@
 "use client"
 
-import { ResetPasswordFormType, resetPasswordSchema } from "@/lib/schemas/validation/reset-password.schema"
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form"
+import { ForgotPasswordFormType, forgotPasswordSchema } from "@/lib/schemas/validation/passwordReset/forgot-password.schema"
+import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../../ui/form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { Input } from "../ui/input"
-import { Button } from "../ui/button"
+import { Input } from "../../ui/input"
+import { Button } from "../../ui/button"
+import { useRouter } from "next/navigation"
 
-const ResetPassword = () => {
-    const form = useForm<ResetPasswordFormType>({
-        resolver: zodResolver(resetPasswordSchema),
+const ForgotPassword = () => {
+    const router = useRouter()
+
+    const form = useForm<ForgotPasswordFormType>({
+        resolver: zodResolver(forgotPasswordSchema),
         defaultValues: {
             "email": ""
         }
     })
 
-    const onSubmit = async (data: ResetPasswordFormType) => {
+    const onSubmit = async (data: ForgotPasswordFormType) => {
         console.log(data)
+        router.push("/auth/otp")
     }
 
     return (
@@ -40,7 +44,7 @@ const ResetPassword = () => {
                                         <FormItem>
                                             <FormLabel>Email</FormLabel>
                                             <FormControl>
-                                                <Input type="email" autoComplete="email" placeholder="your@gmail.com" {...field} className="pl-4 border-none" />
+                                                <Input type="email" autoComplete="email" placeholder="your@gmail.com" {...field} className="py-5 pl-4 border-none" />
                                             </FormControl>
                                             <FormMessage className="transition-opacity duration-200" />
                                         </FormItem>
@@ -49,9 +53,9 @@ const ResetPassword = () => {
                                 <Button
                                     type="submit"
                                     disabled={form.formState.isSubmitting}
-                                    className='w-40 mt-2 self-center cursor-pointer'
+                                    className='w-40 mt-3 self-center cursor-pointer'
                                 >
-                                    {form.formState.isSubmitting ? "Sending" : "Send Reset Link"}
+                                    {form.formState.isSubmitting ? "Sending" : "Send OTP"}
                                 </Button>
                             </form>
                         </Form>
@@ -62,4 +66,4 @@ const ResetPassword = () => {
     )
 }
 
-export default ResetPassword
+export default ForgotPassword

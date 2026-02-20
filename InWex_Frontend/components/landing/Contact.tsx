@@ -2,7 +2,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "../ui/form";
 import { useForm } from "react-hook-form";
-import { contactSchema, ContactValues } from "@/lib/schemas/validation/contact.schema";
+import { contactSchema, ContactValues } from "@/lib/schemas/contact.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { api } from "@/lib/api";
