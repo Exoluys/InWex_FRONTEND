@@ -102,7 +102,7 @@ const LoginForm = ({ onSwitch }: LoginFormProps) => {
                             {form.formState.isSubmitting ? 'Logging in...' : 'Log In'}
                         </Button>
 
-                        <p className='flex items-center justify-center gap-2 text-sm'>
+                        <p className='flex items-center justify-center gap-2 text-sm text-muted-foreground'>
                             Don&#39;t have an account?
                             <Button
                                 type="button"

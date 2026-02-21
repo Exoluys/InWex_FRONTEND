@@ -185,7 +185,7 @@ const SignupAsEmp = ({ onSwitch }: SignupFormProps) => {
                             {form.formState.isSubmitting ? 'Creating account...' : 'Create Account'}
                         </Button>
 
-                        <p className="flex items-center mb-0 justify-center gap-2 text-sm">
+                        <p className="flex items-center mb-0 justify-center gap-2 text-muted-foreground text-sm">
                             Already have an account?
                             <Button
                                 type="button"
@@ -197,7 +197,7 @@ const SignupAsEmp = ({ onSwitch }: SignupFormProps) => {
                             </Button>
                         </p>
 
-                        <p className="flex items-center justify-center gap-2 text-sm">
+                        <p className="flex items-center justify-center gap-2 text-muted-foreground text-sm">
                             Don&#39;t see your organization?
                             <Button
                                 type="button"

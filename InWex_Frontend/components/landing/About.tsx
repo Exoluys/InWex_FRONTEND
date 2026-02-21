@@ -1,9 +1,10 @@
+import { Separator } from "@/components/ui/separator"
+
 const About = () => {
     const stats = [
         { value: "99.9%", label: "Uptime Guarantee" },
         { value: "24/7", label: "Support Available" },
         { value: "500+", label: "Active Users" },
-        { value: "50K+", label: "Products Tracked" },
     ]
 
     return (
@@ -35,21 +36,30 @@ const About = () => {
                     </p>
                 </div>
 
-                {/* Stats — vertical stacked with thin dividers */}
                 <div className="flex flex-col">
                     {stats.map(({ value, label }) => (
-                        <div
-                            key={label}
-                            className="flex items-center justify-between py-5 border-b border-white/10 group"
-                        >
-                            <span className="text-sm text-muted-foreground tracking-widest uppercase">
-                                {label}
-                            </span>
-                            <span className="text-3xl font-bold tabular-nums">
-                                {value}
-                            </span>
+                        <div key={label}>
+                            <div className="flex items-center justify-between py-5 group">
+                                <span className="text-sm text-muted-foreground tracking-widest uppercase">
+                                    {label}
+                                </span>
+                                <span className="text-3xl font-bold tabular-nums">
+                                    {value}
+                                </span>
+                            </div>
+                            <Separator />
                         </div>
                     ))}
+                    <div>
+                        <div className="flex items-center justify-between py-5 group">
+                            <span className="text-sm text-muted-foreground tracking-widest uppercase">
+                                Products Tracked
+                            </span>
+                            <span className="text-3xl font-bold tabular-nums">
+                                50K+
+                            </span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
