@@ -11,10 +11,10 @@ const NotificationBell = () => {
     const unreadCount = notifications.filter((n) => !n.is_read).length
 
     useEffect(() => {
-        api.get("/network/notifications/")
+        api.get("/network/notifications")
             .then((res) => setNotifications(res.data))
             .catch((err) => console.log(err))
-    })
+    }, [])
 
     useEffect(() => {
         ws.onmessage = (event) => {
@@ -25,7 +25,7 @@ const NotificationBell = () => {
     }, [])
 
     const markAllRead = () => {
-        setNotifications((prev) => prev.map((n) => ({ ...n, read: true })))
+        setNotifications((prev) => prev.map((n) => ({ ...n, is_read: true })))
     }
 
     return (
