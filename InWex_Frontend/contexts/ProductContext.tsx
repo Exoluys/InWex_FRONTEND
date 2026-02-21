@@ -37,9 +37,6 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
         if (showLoading) setIsLoading(true)
         setError(null)
         try {
-            const token = localStorage.getItem('token')
-            if (!token) throw new Error("No authentication token found")
-
             const res = await api.get('/products/get-products')
             setProducts(res.data.results)
         }
