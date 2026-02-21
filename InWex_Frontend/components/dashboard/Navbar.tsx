@@ -1,8 +1,5 @@
 "use client"
 
-import React from "react"
-import { Bell, MessageSquareMore } from "lucide-react"
-
 import { Button } from "../ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import {
@@ -16,6 +13,8 @@ import {
     CardContent,
 } from "../ui/card"
 import { useAuth } from "@/contexts/AuthContext"
+import NotificationBell from "./NotificationBell"
+import { MessageSquareMore } from "lucide-react"
 
 interface NavbarProps {
     leftContent?: React.ReactNode
@@ -41,9 +40,7 @@ const Navbar = ({ leftContent }: NavbarProps) => {
                     <MessageSquareMore className="h-4 w-4" />
                 </Button>
 
-                <Button variant="secondary" size="icon">
-                    <Bell className="h-4 w-4" />
-                </Button>
+                <NotificationBell />
 
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>

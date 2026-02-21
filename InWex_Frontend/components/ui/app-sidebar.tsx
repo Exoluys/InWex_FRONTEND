@@ -17,14 +17,14 @@ import {
     Settings,
     LogOut,
 } from "lucide-react"
-import { businessItems, managerItems, staffItems } from "../config/sidebar/sidebarItems"
+import { NonStaffItems, staffItems } from "../config/sidebar/sidebarItems"
 import { useAuth } from "@/contexts/AuthContext"
 import Image from "next/image"
 
 const AppSidebar = ({ role }: { role: string }) => {
     const pathname = usePathname()
     const { logout } = useAuth()
-    const mainItems = role === "business" ? businessItems : role === "manager" ? managerItems : staffItems
+    const mainItems = role === "staff" ? staffItems : NonStaffItems
 
     return (
         <Sidebar className="border-none">

@@ -1,7 +1,8 @@
+import { BASE_URL } from "@/components/config";
 import axios from "axios";
 
 export const api = axios.create({
-    baseURL: "https://www.inwex.tech",
+    baseURL: BASE_URL,
     headers: {
         "Content-Type": "application/json",
     }
