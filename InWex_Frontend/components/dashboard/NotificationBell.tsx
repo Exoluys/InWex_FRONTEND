@@ -19,6 +19,7 @@ const NotificationBell = () => {
     useEffect(() => {
         ws.onmessage = (event) => {
             const data = JSON.parse(event.data)
+            console.log(data)
             setNotifications((prev) => [data, ...prev])
         }
     }, [])
@@ -42,7 +43,7 @@ const NotificationBell = () => {
 
             <DropdownMenuContent align="end" className="p-0">
                 <Card className="w-100 border-none shadow-none">
-                    <CardHeader className="flex flex-row border-b items-center justify-between">
+                    <CardHeader className="flex flex-row items-center justify-between">
                         <p className="font-semibold text-m">Notifications</p>
                         {unreadCount > 0 && (
                             <button
