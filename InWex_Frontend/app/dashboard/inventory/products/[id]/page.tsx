@@ -1,7 +1,7 @@
 "use client"
 
 import ProductPage from "@/components/dashboard/inventory/products/ProductPage"
-import Navbar from "@/components/dashboard/Navbar"
+import Navbar from "@/components/dashboard/navbar/Navbar"
 import { useProduct } from "@/contexts/ProductContext"
 import { use } from "react"
 

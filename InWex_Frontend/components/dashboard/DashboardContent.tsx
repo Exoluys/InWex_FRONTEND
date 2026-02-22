@@ -7,7 +7,7 @@ import { useState } from "react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import Navbar from "@/components/dashboard/Navbar";
+import Navbar from "@/components/dashboard/navbar/Navbar";
 import { useAuth } from "@/contexts/AuthContext";
 
 const DashBoardContent = () => {

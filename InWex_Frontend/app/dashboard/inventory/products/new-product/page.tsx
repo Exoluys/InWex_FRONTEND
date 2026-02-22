@@ -1,5 +1,5 @@
 import AddProduct from "@/components/dashboard/inventory/products/AddProduct"
-import Navbar from "@/components/dashboard/Navbar"
+import Navbar from "@/components/dashboard/navbar/Navbar"
 
 const page = () => {
     return (

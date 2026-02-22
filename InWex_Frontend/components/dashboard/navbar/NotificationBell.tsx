@@ -1,10 +1,10 @@
 import { Bell, CheckCheck } from "lucide-react"
-import { Button } from "../ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "../ui/dropdown-menu"
-import { Card, CardContent, CardHeader } from "../ui/card"
 import { useEffect, useState } from "react"
 import ws from "@/lib/socket"
 import { api } from "@/lib/api"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
 
 const NotificationBell = () => {
     const [notifications, setNotifications] = useState<{ id: number, title: string, message: string, created_at: string, is_read: boolean }[]>([])

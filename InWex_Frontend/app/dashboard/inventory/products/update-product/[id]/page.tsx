@@ -1,7 +1,7 @@
 "use client"
 
 import UpdateProduct from "@/components/dashboard/inventory/products/UpdateProduct"
-import Navbar from "@/components/dashboard/Navbar"
+import Navbar from "@/components/dashboard/navbar/Navbar"
 import { Card, CardContent } from "@/components/ui/card"
 import { useProduct } from "@/contexts/ProductContext"
 import { Loader2, Package } from "lucide-react"

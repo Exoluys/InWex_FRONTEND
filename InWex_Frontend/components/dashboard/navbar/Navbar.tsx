@@ -1,20 +1,20 @@
 "use client"
 
-import { Button } from "../ui/button"
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
+import { Button } from "../../ui/button"
+import { Avatar, AvatarFallback, AvatarImage } from "../../ui/avatar"
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuTrigger,
-} from "../ui/dropdown-menu"
+} from "../../ui/dropdown-menu"
 import {
     Card,
     CardHeader,
     CardContent,
-} from "../ui/card"
+} from "../../ui/card"
 import { useAuth } from "@/contexts/AuthContext"
-import NotificationBell from "./NotificationBell"
 import { MessageSquareMore } from "lucide-react"
+import NotificationBell from "./NotificationBell"
 
 interface NavbarProps {
     leftContent?: React.ReactNode

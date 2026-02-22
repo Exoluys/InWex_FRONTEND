@@ -1,7 +1,7 @@
 "use client"
 
 import InventoryContent from "@/components/dashboard/inventory/InventoryContent";
-import Navbar from "@/components/dashboard/Navbar";
+import Navbar from "@/components/dashboard/navbar/Navbar";
 
 const page = () => {
     const navbarLeftContent = (
