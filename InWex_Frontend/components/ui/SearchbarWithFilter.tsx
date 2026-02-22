@@ -15,7 +15,7 @@ type SearchbarProps = {
     onFilterSelect?: (value: string) => void
 }
 
-const Searchbar = ({ filters, onFilterSelect }: SearchbarProps) => {
+const SearchbarWithFilter = ({ filters, onFilterSelect }: SearchbarProps) => {
     return (
         <div className="flex space-x-5 items-center">
             <InputGroup className="border-none w-90 h-11 pl-4">
@@ -44,4 +44,4 @@ const Searchbar = ({ filters, onFilterSelect }: SearchbarProps) => {
     )
 }
 
-export default Searchbar
+export default SearchbarWithFilter

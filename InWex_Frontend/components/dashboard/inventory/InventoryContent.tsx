@@ -2,7 +2,7 @@ import { ProductCard } from "@/components/dashboard/inventory/ProductCard"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card";
 import { DropdownMenu, DropdownMenuItem, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import Searchbar from "@/components/ui/Searchbar"
+import SearchbarWithFilter from "@/components/ui/SearchbarWithFilter";
 import { useProduct } from "@/contexts/ProductContext";
 import { AlertTriangle, ChevronDown, Ellipsis, Loader2, Menu, Package, Plus } from "lucide-react"
 import { useRouter } from "next/navigation";
@@ -39,7 +39,7 @@ const InventoryContent = () => {
                 </div>
             </div>
             <div className="my-10 flex justify-between items-center">
-                <Searchbar
+                <SearchbarWithFilter
                     filters={[
                         { label: "Product Code", value: "code" },
                         { label: "Product Name", value: "name" },

@@ -1,4 +1,5 @@
 import Navbar from "@/components/dashboard/navbar/Navbar"
+import WarehouseContent from "@/components/dashboard/warehouse/WarehouseContent"
 
 const page = () => {
     const navbarLeftContent = (
@@ -8,6 +9,7 @@ const page = () => {
     return (
         <>
             <Navbar leftContent={navbarLeftContent} />
+            <WarehouseContent />
         </>
     )
 }

@@ -6,7 +6,7 @@ import { OrdersTable } from "@/components/dashboard/orders/OrdersTable";
 import { StatusCard } from "@/components/dashboard/orders/StatusCard"
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import Searchbar from "@/components/ui/Searchbar";
+import Searchbar from "@/components/ui/SearchbarWithFilter";
 import { Plus, SlidersHorizontal, Upload } from "lucide-react";
 
 const Orders = () => {
