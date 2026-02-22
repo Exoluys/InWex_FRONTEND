@@ -11,21 +11,22 @@ const NotificationBell = () => {
     const unreadCount = notifications.filter((n) => !n.is_read).length
 
     useEffect(() => {
-        api.get("/network/notifications")
-            .then((res) => setNotifications(res.data))
+        api.get(`/network/notifications`)
+            .then((res) => setNotifications(res.data.reverse()))
             .catch((err) => console.log(err))
     }, [])
 
     useEffect(() => {
         ws.onmessage = (event) => {
             const data = JSON.parse(event.data)
-            console.log(data)
             setNotifications((prev) => [data, ...prev])
         }
     }, [])
 
     const markAllRead = () => {
-        setNotifications((prev) => prev.map((n) => ({ ...n, is_read: true })))
+        api.get("/network/notifications?is_read=true")
+            .then(() => setNotifications((prev) => prev.map((n) => ({ ...n, is_read: true }))))
+            .catch((err) => console.log(err))
     }
 
     return (
@@ -42,7 +43,7 @@ const NotificationBell = () => {
             </DropdownMenuTrigger>
 
             <DropdownMenuContent align="end" className="p-0">
-                <Card className="w-100 border-none shadow-none">
+                <Card className="w-100 border-none shadow-none pb-0">
                     <CardHeader className="flex flex-row items-center justify-between">
                         <p className="font-semibold text-m">Notifications</p>
                         {unreadCount > 0 && (
@@ -56,7 +57,7 @@ const NotificationBell = () => {
                         )}
                     </CardHeader>
 
-                    <CardContent className="p-0 max-h-72 overflow-y-auto">
+                    <CardContent className="p-0 max-h-72 overflow-y-auto border-t">
                         {notifications.length === 0 ? (
                             <p className="text-sm text-muted-foreground text-center py-6">
                                 No notifications
@@ -71,7 +72,7 @@ const NotificationBell = () => {
                                         <p className={`text-sm ${!n.is_read ? "font-medium" : "text-muted-foreground"}`}>
                                             {n.message}
                                         </p>
-                                        <p className="text-xs text-muted-foreground mt-0.5">{n.created_at}</p>
+                                        <p className="text-xs text-muted-foreground mt-0.5">{new Date(n.created_at).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}</p>
                                     </div>
                                     {!n.is_read && (
                                         <span className="h-2 w-2 rounded-full bg-blue-500 mt-1.5 shrink-0" />
