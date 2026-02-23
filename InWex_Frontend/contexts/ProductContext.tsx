@@ -4,7 +4,7 @@ import { api } from "@/lib/api"
 import { Category, Product } from "@/lib/types"
 import { createContext, useContext, useEffect, useState } from "react"
 import { useAuth } from "./AuthContext"
-import { ProductValues } from "@/lib/schemas/addProduct.schema"
+import { ProductValues } from "@/lib/schemas/product/addProduct.schema"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 
@@ -13,6 +13,7 @@ type UpdateProductPayload = Omit<Partial<Product>, 'image'> & { image?: File }
 type ProductContextType = {
     products: Product[]
     categories: Category[]
+    count: number | null
     isLoading: boolean
     error: string | null
     addProduct: (product: ProductValues) => Promise<void>
@@ -26,6 +27,7 @@ const ProductContext = createContext<ProductContextType | undefined>(undefined)
 
 export const ProductProvider = ({ children }: { children: React.ReactNode }) => {
     const [products, setProducts] = useState<Product[]>([])
+    const [count, setCount] = useState<number | null>(null)
     const [categories, setCategories] = useState<Category[]>([])
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
@@ -39,6 +41,7 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
         try {
             const res = await api.get('/products/get-products')
             setProducts(res.data.results)
+            setCount(res.data.count)
         }
         catch (err) {
             setError(err instanceof Error ? err.message : "An error occurred")
@@ -89,8 +92,8 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
             })
             toast.success("Product added successfully")
             setProducts(prev => [...prev, res.data])
+            setCount(res.data.count)
             router.push("/dashboard/inventory/")
-            fetchProducts(false)
         }
         catch (err) {
             toast.error(err instanceof Error ? err.message : "Failed to add product")
@@ -104,15 +107,15 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
                 if (value !== undefined) formData.append(key, value as string | Blob)
             })
 
-            await api.put(`/products/add-products/${productId}`, formData, {
+            const res = await api.put(`/products/add-products/${productId}`, formData, {
                 headers: { "Content-Type": "multipart/form-data" }
             })
-            toast.success("Product updated successfully")
             setProducts(prev => prev.map(p =>
                 p.id === productId ? { ...p, ...updatedProduct, image: p.image } as Product : p
             ))
+            setCount(res.data.count)
+            toast.success("Product updated successfully")
             router.push("/dashboard/inventory/")
-            fetchProducts(false)
         }
         catch (err) {
             toast.error(err instanceof Error ? err.message : "Failed to update product")
@@ -121,11 +124,11 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
 
     const deleteProduct: ProductContextType['deleteProduct'] = async (productId) => {
         try {
-            await api.delete(`/products/add-products/${productId}`)
+            const res = await api.delete(`/products/add-products/${productId}`)
             setProducts(prev => prev.filter(p => p.id !== productId))
+            setCount(res.data.count)
             toast.success("Product deleted successfully")
             router.push("/dashboard/inventory/")
-            fetchProducts(false)
         }
         catch (err) {
             toast.error(err instanceof Error ? err.message : "Failed to delete product")
@@ -136,6 +139,7 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
         <ProductContext.Provider
             value={{
                 products,
+                count,
                 categories,
                 isLoading,
                 error,

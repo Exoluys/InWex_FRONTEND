@@ -145,7 +145,7 @@ const ProductPage = ({ product, category }: { product: Product, category: Catego
                             Delete
                         </Button>
                         <Button
-                            onClick={() => router.push(`/dashboard/inventory/products/update-product/${product.id}`)}>
+                            onClick={() => router.push(`/dashboard/inventory/products/update/${product.id}`)}>
                             Update
                         </Button>
                     </div>

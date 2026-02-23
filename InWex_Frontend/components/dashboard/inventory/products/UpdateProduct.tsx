@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useForm } from "react-hook-form";
 import { useProduct } from "@/contexts/ProductContext";
 import { useEffect, useRef } from "react";
-import { updateProductSchema, UpdateProductValues } from "@/lib/schemas/updateProduct.schema";
+import { updateProductSchema, UpdateProductValues } from "@/lib/schemas/product/updateProduct.schema";
 import { Product } from "@/lib/types";
 
 const UpdateProduct = ({ product }: { product: Product }) => {

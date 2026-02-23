@@ -11,7 +11,6 @@ const page = () => {
     return (
         <>
             <Navbar leftContent={navbarLeftContent} />
-
             <InventoryContent />
         </>
     )

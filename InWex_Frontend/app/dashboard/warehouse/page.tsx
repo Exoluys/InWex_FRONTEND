@@ -1,5 +1,5 @@
 import Navbar from "@/components/dashboard/navbar/Navbar"
-import WarehouseContent from "@/components/dashboard/warehouse/WarehouseContent"
+import WarehouseContent from "@/components/dashboard/warehouses/WarehouseContent"
 
 const page = () => {
     const navbarLeftContent = (

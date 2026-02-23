@@ -10,7 +10,7 @@ import { useState } from "react";
 
 const InventoryContent = () => {
     const [selected, setSelected] = useState("Product")
-    const { products, isLoading, error } = useProduct()
+    const { products, count, isLoading, error } = useProduct()
     const router = useRouter()
 
     const options = [
@@ -25,11 +25,11 @@ const InventoryContent = () => {
             <div className="flex justify-between items-center">
                 <div>
                     <h1 className="text-4xl font-semibold">Product List</h1>
-                    <p>123 Total Items</p>
+                    <p>{count} Total Items</p>
                 </div>
                 <div>
                     <Button
-                        onClick={() => router.push("/dashboard/inventory/products/new-product")}
+                        onClick={() => router.push("/dashboard/inventory/products/new")}
                         variant="secondary"
                         className="p-5! pr-6! cursor-pointer"
                     >

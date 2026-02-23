@@ -6,13 +6,13 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useForm } from "react-hook-form";
-import { productSchema, ProductValues } from "@/lib/schemas/addProduct.schema";
+import { productSchema, ProductValues } from "@/lib/schemas/product/addProduct.schema";
 import { useProduct } from "@/contexts/ProductContext";
 import { useEffect, useRef } from "react";
 
 const AddProduct = () => {
     const { addProduct, categories } = useProduct()
-    const fileInputRef = useRef<HTMLInputElement>(null);
+    const fileInputRef = useRef<HTMLInputElement>(null)
 
     const form = useForm<ProductValues>({
         resolver: zodResolver(productSchema),
@@ -27,7 +27,7 @@ const AddProduct = () => {
             image: undefined,
             description: "",
         },
-    });
+    })
 
     const textFields: {
         name: keyof ProductValues;
@@ -40,19 +40,19 @@ const AddProduct = () => {
             { name: "barcode", type: "text", placeholder: "BARCODE *" },
             { name: "cost_price", type: "number", placeholder: "COST PRICE (INR) *" },
             { name: "selling_price", type: "number", placeholder: "SELLING PRICE (INR) *" },
-        ];
+        ]
 
     const isSubmitting = form.formState.isSubmitSuccessful;
 
     useEffect(() => {
         if (isSubmitting && fileInputRef.current) {
-            fileInputRef.current.value = "";
+            fileInputRef.current.value = ""
         }
     }, [isSubmitting])
 
     const onSubmit = async (data: ProductValues) => {
-        await addProduct(data);
-        form.reset();
+        await addProduct(data)
+        form.reset()
     }
 
     return (
@@ -172,7 +172,7 @@ const AddProduct = () => {
                 </form>
             </Form>
         </div>
-    );
-};
+    )
+}
 
 export default AddProduct;

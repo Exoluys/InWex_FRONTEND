@@ -35,3 +35,17 @@ export type Category = {
     name: string
     description: string
 }
+
+export type Warehouse = {
+    id: number
+    name: string
+    company: number
+    created_at: string
+}
+
+export type Section = {
+    id: number
+    name: string
+    warehouse: string
+    created_at: string
+}

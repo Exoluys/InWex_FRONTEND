@@ -2,12 +2,15 @@
 
 import { AuthProvider } from "@/contexts/AuthContext"
 import { ProductProvider } from "@/contexts/ProductContext"
+import { WarehouseProvider } from "@/contexts/WarehouseContext"
 
 export function AppProviders({ children }: { children: React.ReactNode }) {
     return (
         <AuthProvider>
             <ProductProvider>
-                {children}
+                <WarehouseProvider>
+                    {children}
+                </WarehouseProvider>
             </ProductProvider>
         </AuthProvider >
     )
