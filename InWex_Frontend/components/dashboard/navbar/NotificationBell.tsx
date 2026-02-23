@@ -20,7 +20,7 @@ const NotificationBell = () => {
         ws.onmessage = (event) => {
             const data = JSON.parse(event.data)
             setNotifications((prev) => [data, ...prev])
-            new Audio("/sound/notification.mp3").play().catch(() => { })
+            new Audio("/sound/notification_v2.mp3").play().catch(() => { })
         }
     }, [])
 
