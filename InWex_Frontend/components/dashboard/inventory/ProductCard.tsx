@@ -18,7 +18,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
     const router = useRouter()
 
     return (
-        <Card className="w-80 rounded-xl overflow-hidden bg-[#1E1E1E] p-0 border-none">
+        <Card className="w-full rounded-xl overflow-hidden bg-[#1E1E1E] p-0 border-none">
             <div className="relative h-60 bg-zinc-200 flex items-center justify-center">
                 <Image
                     src={product.image}
@@ -29,7 +29,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
                 />
             </div>
 
-            <CardContent className="px-4 space-y-2">
+            <CardContent className="flex-1 px-4 space-y-2">
                 <div className="flex items-center justify-between text-sm">
                     <span className="bg-zinc-700 text-white px-3 py-1 rounded-md">
                         Code: {product.sku}
@@ -52,7 +52,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
                 </CardDescription>
             </CardContent>
 
-            <CardFooter className="px-4 pb-6 flex justify-end gap-2">
+            <CardFooter className="mt-auto px-4 pb-6 flex justify-end gap-2">
                 <Button
                     onClick={() => (router.push(`/dashboard/inventory/products/${product.id}`))}
                     size="lg"

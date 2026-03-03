@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { DropdownMenu, DropdownMenuItem, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import SearchbarWithFilter from "@/components/ui/SearchbarWithFilter";
 import { useProduct } from "@/contexts/ProductContext";
-import { AlertTriangle, ChevronDown, Loader2, Package, Plus } from "lucide-react"
+import { AlertTriangle, ChevronDown, Package, Plus } from "lucide-react"
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
@@ -14,6 +14,7 @@ import {
     PaginationNext,
     PaginationPrevious,
 } from "@/components/ui/pagination"
+import { ProductCardShimmer } from "./ProductCardShimmer";
 
 const InventoryContent = () => {
     const [selected, setSelected] = useState("Product")
@@ -85,22 +86,16 @@ const InventoryContent = () => {
                     </div>
                 </div>
             </div>
+
             {isLoading && (
-                <div className="flex justify-center items-center py-24">
-                    <Card className="bg-transparent w-full max-w-sm border-none">
-                        <CardContent className="flex flex-col items-center gap-4 py-10 text-center">
-                            <div className="bg-zinc-800 rounded-full p-3">
-                                <Loader2 className="h-6 w-6 text-zinc-400 animate-spin" />
-                            </div>
-                            <div className="space-y-1">
-                                <p className="text-zinc-300 font-semibold text-lg">Loading Products</p>
-                                <p className="text-zinc-500 text-sm">Please wait a moment...</p>
-                            </div>
-                        </CardContent>
-                    </Card>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    {Array.from({ length: 8 }).map((_, index) => (
+                        <ProductCardShimmer key={index} />
+                    ))}
                 </div>
             )}
 
+            {/* Error State */}
             {error && (
                 <div className="flex justify-center items-center py-24">
                     <Card className="bg-transparent w-full max-w-sm border-none">
@@ -116,6 +111,7 @@ const InventoryContent = () => {
                     </Card>
                 </div>
             )}
+
             {!isLoading && !error && (
                 <>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -124,18 +120,12 @@ const InventoryContent = () => {
                                 <ProductCard key={product.id} product={product} />
                             ))
                         ) : (
-                            <div className="col-span-full flex justify-center items-center py-24">
-                                <Card className="bg-transparent w-full max-w-sm border-none">
-                                    <CardContent className="flex flex-col items-center gap-4 py-10 text-center">
-                                        <div className="bg-zinc-800 rounded-full p-3">
-                                            <Package className="h-6 w-6 text-zinc-400" />
-                                        </div>
-                                        <div className="space-y-1">
-                                            <p className="text-zinc-300 font-semibold text-lg">No Products Found</p>
-                                            <p className="text-zinc-500 text-sm">Try adjusting your search or filters.</p>
-                                        </div>
-                                    </CardContent>
-                                </Card>
+                            <div className="col-span-full flex flex-col justify-center items-center py-24 gap-3">
+                                <div className="bg-zinc-800 rounded-full p-4">
+                                    <Package className="h-6 w-6 text-zinc-400" />
+                                </div>
+                                <p className="text-zinc-300 font-semibold text-lg">No products found</p>
+                                <p className="text-zinc-500 text-sm">Try adjusting your filters or add a new product.</p>
                             </div>
                         )}
                     </div>
@@ -146,10 +136,9 @@ const InventoryContent = () => {
                                 <PaginationItem>
                                     <PaginationPrevious
                                         onClick={goToPrevPage}
-                                        className={!hasPrev ? " pointer-events-none opacity-50" : "cursor-pointer"}
+                                        className={!hasPrev ? "pointer-events-none opacity-50" : "cursor-pointer"}
                                     />
                                 </PaginationItem>
-
                                 <PaginationItem>
                                     <PaginationNext
                                         onClick={goToNextPage}
@@ -161,7 +150,7 @@ const InventoryContent = () => {
                     </div>
                 </>
             )}
-        </main >
+        </main>
     )
 }
 
