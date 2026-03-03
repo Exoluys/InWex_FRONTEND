@@ -7,10 +7,15 @@ import { useWarehouse } from "@/contexts/WarehouseContext"
 import { AlertTriangle, Loader2, Plus, Warehouse } from "lucide-react"
 import WarehouseCard from "./WarehouseCard"
 import { useRouter } from "next/navigation"
+import { useEffect } from "react"
 
 const WarehouseContent = () => {
-    const { warehouses, count, isLoading, error } = useWarehouse()
+    const { warehouses, fetchWarehouses, count, isLoading, error } = useWarehouse()
     const router = useRouter()
+
+    useEffect(() => {
+        fetchWarehouses(true)
+    }, [fetchWarehouses])
 
     return (
         <main className="mt-12">

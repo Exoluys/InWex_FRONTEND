@@ -2,7 +2,7 @@
 
 import { api } from "@/lib/api"
 import { Category, Product } from "@/lib/types"
-import { createContext, useContext, useEffect, useState } from "react"
+import { createContext, useCallback, useContext, useEffect, useState } from "react"
 import { useAuth } from "./AuthContext"
 import { ProductValues } from "@/lib/schemas/product/addProduct.schema"
 import { toast } from "sonner"
@@ -16,32 +16,64 @@ type ProductContextType = {
     count: number | null
     isLoading: boolean
     error: string | null
+    fetchProducts: (showLoading?: boolean, url?: string) => void
+    fetchCategory: () => void
     addProduct: (product: ProductValues) => Promise<void>
     updateProduct: (productId: number, updatedProduct: UpdateProductPayload) => Promise<void>
     deleteProduct: (productId: number) => Promise<void>
     selectedProduct: Product | null
     setSelectedProduct: (p: Product | null) => void
+    goToNextPage: () => void
+    goToPrevPage: () => void
+    hasNext: boolean
+    hasPrev: boolean
 }
 
 const ProductContext = createContext<ProductContextType | undefined>(undefined)
 
 export const ProductProvider = ({ children }: { children: React.ReactNode }) => {
     const [products, setProducts] = useState<Product[]>([])
+    const [pagination, setPagination] = useState<{
+        next: string | null,
+        prev: string | null
+    }>({
+        next: null,
+        prev: null
+    })
     const [count, setCount] = useState<number | null>(null)
     const [categories, setCategories] = useState<Category[]>([])
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
-    const { user, isLoading: authLoading } = useAuth()
+    const { user } = useAuth()
     const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
     const router = useRouter()
 
-    const fetchProducts = async (showLoading = true) => {
+    const goToNextPage = () => {
+        if (pagination.next) {
+            fetchProducts(true, pagination.next)
+        }
+    }
+
+    const goToPrevPage = () => {
+        if (pagination.prev) {
+            fetchProducts(true, pagination.prev)
+        }
+    }
+
+    const fetchProducts = useCallback(async (showLoading = true, url?: string) => {
         if (showLoading) setIsLoading(true)
         setError(null)
         try {
-            const res = await api.get('/products/get-products')
+            const endPoint = url || '/products/get-products'
+            const res = await api.get(endPoint)
+
             setProducts(res.data.results)
             setCount(res.data.count)
+
+            setPagination({
+                next: res.data.next,
+                prev: res.data.previous
+            })
         }
         catch (err) {
             setError(err instanceof Error ? err.message : "An error occurred")
@@ -49,9 +81,9 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
         finally {
             if (showLoading) setIsLoading(false)
         }
-    }
+    }, [])
 
-    const fetchCategory = async () => {
+    const fetchCategory = useCallback(async () => {
         try {
             const res = await api.get('/products/get-categories')
             setCategories(res.data)
@@ -59,26 +91,14 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
         catch (err) {
             setError(err instanceof Error ? err.message : "An error occurred")
         }
-    }
+    }, [])
 
     useEffect(() => {
-        if (authLoading) return
-        if (user) {
-            fetchProducts(true)
-            fetchCategory()
-
-            const interval = setInterval(() => {
-                fetchProducts(false)
-                fetchCategory()
-            }, 50 * 60 * 1000)
-
-            return () => clearInterval(interval)
-        }
-        else {
+        if (!user) {
             setProducts([])
             setError(null)
         }
-    }, [user, authLoading])
+    }, [user])
 
     const addProduct: ProductContextType['addProduct'] = async (product) => {
         try {
@@ -87,12 +107,11 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
                 if (value !== undefined) formData.append(key, value as string | Blob)
             })
 
-            const res = await api.post("/products/add-products", formData, {
+            await api.post("/products/add-products", formData, {
                 headers: { "Content-Type": "multipart/form-data" }
             })
             toast.success("Product added successfully")
-            setProducts(prev => [...prev, res.data])
-            setCount(res.data.count)
+            await fetchProducts(true)
             router.push("/dashboard/inventory/")
         }
         catch (err) {
@@ -107,13 +126,10 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
                 if (value !== undefined) formData.append(key, value as string | Blob)
             })
 
-            const res = await api.put(`/products/add-products/${productId}`, formData, {
+            await api.put(`/products/add-products/${productId}`, formData, {
                 headers: { "Content-Type": "multipart/form-data" }
             })
-            setProducts(prev => prev.map(p =>
-                p.id === productId ? { ...p, ...updatedProduct, image: p.image } as Product : p
-            ))
-            setCount(res.data.count)
+            await fetchProducts(true)
             toast.success("Product updated successfully")
             router.push("/dashboard/inventory/")
         }
@@ -124,9 +140,8 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
 
     const deleteProduct: ProductContextType['deleteProduct'] = async (productId) => {
         try {
-            const res = await api.delete(`/products/add-products/${productId}`)
-            setProducts(prev => prev.filter(p => p.id !== productId))
-            setCount(res.data.count)
+            await api.delete(`/products/add-products/${productId}`)
+            await fetchProducts(true);
             toast.success("Product deleted successfully")
             router.push("/dashboard/inventory/")
         }
@@ -143,11 +158,17 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
                 categories,
                 isLoading,
                 error,
+                fetchProducts,
+                fetchCategory,
                 addProduct,
                 updateProduct,
                 deleteProduct,
                 selectedProduct,
-                setSelectedProduct
+                setSelectedProduct,
+                goToNextPage,
+                goToPrevPage,
+                hasNext: !!pagination.next,
+                hasPrev: !!pagination.prev
             }}
         >
             {children}

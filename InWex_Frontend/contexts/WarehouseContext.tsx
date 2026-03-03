@@ -2,7 +2,7 @@
 
 import { WarehouseValues } from "@/lib/schemas/warehouse/addWarehouse.schema"
 import { Section, Warehouse } from "@/lib/types"
-import { createContext, useContext, useEffect, useState } from "react"
+import { createContext, useCallback, useContext, useEffect, useState } from "react"
 import { useAuth } from "./AuthContext"
 import { useRouter } from "next/navigation"
 import { api } from "@/lib/api"
@@ -14,6 +14,7 @@ export type WarehouseContextType = {
     count: number | null
     isLoading: boolean
     error: string | null
+    fetchWarehouses: (showLoading?: boolean) => void
     addWarehouse: (data: WarehouseValues) => Promise<void>
     updateWarehouse: (id: number, data: Partial<Warehouse>) => Promise<void>
     deleteWarehouse: (id: number) => Promise<void>
@@ -31,10 +32,10 @@ export const WarehouseProvider = ({ children }: { children: React.ReactNode }) =
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const [selectedWarehouse, setSelectedWarehouse] = useState<Warehouse | null>(null)
-    const { user, isLoading: authLoading } = useAuth()
+    const { user } = useAuth()
     const router = useRouter()
 
-    const fetchWarehouses = async (showLoading = true) => {
+    const fetchWarehouses = useCallback(async (showLoading = true) => {
         if (showLoading) setIsLoading(true)
         setError(null)
         try {
@@ -48,9 +49,9 @@ export const WarehouseProvider = ({ children }: { children: React.ReactNode }) =
         finally {
             if (showLoading) setIsLoading(false)
         }
-    }
+    }, [])
 
-    const fetchSections = async (warehouseId: number) => {
+    const fetchSections = useCallback(async (warehouseId: number) => {
         try {
             const res = await api.get(`/warehouse/sections?warehouse=${warehouseId}`)
             setSections(res.data)
@@ -58,13 +59,12 @@ export const WarehouseProvider = ({ children }: { children: React.ReactNode }) =
         catch (err) {
             setError(err instanceof Error ? err.message : "An error occurred")
         }
-    }
+    }, [])
 
     const addWarehouse: WarehouseContextType['addWarehouse'] = async (warehouse) => {
         try {
-            const res = await api.post("/warehouse/warehouse", warehouse)
-            setWarehouses((prev) => [...prev, res.data])
-            setCount(res.data.count)
+            await api.post("/warehouse/warehouse", warehouse)
+            await fetchWarehouses(true)
             toast.success("Warehouse added successfully")
             router.push("/dashboard/warehouses")
         }
@@ -75,9 +75,8 @@ export const WarehouseProvider = ({ children }: { children: React.ReactNode }) =
 
     const updateWarehouse: WarehouseContextType['updateWarehouse'] = async (warehouseId, updatedWarehouse) => {
         try {
-            const res = await api.put(`/warehouse/warehouse/${warehouseId}`, updatedWarehouse)
-            setWarehouses((prev) => prev.map(w => w.id === warehouseId ? { ...w, ...updatedWarehouse } : w))
-            setCount(res.data.count)
+            await api.put(`/warehouse/warehouse/${warehouseId}`, updatedWarehouse)
+            await fetchWarehouses(true)
             toast.success("Warehouse updated successfully")
             router.push("/dashboard/warehouses")
         }
@@ -88,9 +87,8 @@ export const WarehouseProvider = ({ children }: { children: React.ReactNode }) =
 
     const deleteWarehouse: WarehouseContextType['deleteWarehouse'] = async (warehouseId) => {
         try {
-            const res = await api.delete(`/warehouse/warehouse/${warehouseId}`)
-            setWarehouses((prev) => prev.filter(w => w.id !== warehouseId))
-            setCount(res.data.count)
+            await api.delete(`/warehouse/warehouse/${warehouseId}`)
+            await fetchWarehouses(true)
             toast.success("Warehouse deleted successfully")
             router.push("/dashboard/warehouses")
         }
@@ -100,22 +98,12 @@ export const WarehouseProvider = ({ children }: { children: React.ReactNode }) =
     }
 
     useEffect(() => {
-        if (authLoading) return
-        if (user) {
-            fetchWarehouses(true)
-
-            const interval = setInterval(() => {
-                fetchWarehouses(false)
-            }, 50 * 60 * 1000)
-
-            return () => clearInterval(interval)
-        }
-        else {
+        if (!user) {
             setWarehouses([])
             setSections([])
             setError(null)
         }
-    }, [user, authLoading])
+    }, [user])
 
     return (
         <WarehouseContext.Provider
@@ -125,6 +113,7 @@ export const WarehouseProvider = ({ children }: { children: React.ReactNode }) =
                 count,
                 isLoading,
                 error,
+                fetchWarehouses,
                 addWarehouse,
                 updateWarehouse,
                 deleteWarehouse,
