@@ -4,8 +4,10 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import SearchbarWithFilter from "@/components/ui/SearchbarWithFilter"
+import { useStaff } from "@/contexts/StaffContext"
 import { AlertTriangle, Loader2, Phone, Plus, UserRound, Users } from "lucide-react"
 import { useRouter } from "next/navigation"
+import { useEffect } from "react"
 
 const dummyStaff = [
     { id: 1, name: "David Johnson", role: "Warehouse Manager", warehouse: "Main Distribution Center", phone: "+1 213-555-0171", status: "Active" },
@@ -26,6 +28,12 @@ const error = null
 
 const StaffContent = () => {
     const router = useRouter()
+    const { staffs, fetchStaff } = useStaff()
+
+    useEffect(() => {
+        fetchStaff(true)
+    }, [fetchStaff])
+
 
     return (
         <main className="mt-12">

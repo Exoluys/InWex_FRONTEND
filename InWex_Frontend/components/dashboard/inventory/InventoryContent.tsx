@@ -95,7 +95,6 @@ const InventoryContent = () => {
                 </div>
             )}
 
-            {/* Error State */}
             {error && (
                 <div className="flex justify-center items-center py-24">
                     <Card className="bg-transparent w-full max-w-sm border-none">

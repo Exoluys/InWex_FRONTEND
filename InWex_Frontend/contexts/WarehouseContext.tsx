@@ -15,12 +15,12 @@ export type WarehouseContextType = {
     isLoading: boolean
     error: string | null
     fetchWarehouses: (showLoading?: boolean) => void
+    fetchSections: (warehouseId: number) => Promise<void>
     addWarehouse: (data: WarehouseValues) => Promise<void>
     updateWarehouse: (id: number, data: Partial<Warehouse>) => Promise<void>
     deleteWarehouse: (id: number) => Promise<void>
     selectedWarehouse: Warehouse | null
     setSelectedWarehouse: (w: Warehouse | null) => void
-    fetchSection: (warehouseId: number) => Promise<void>
 }
 
 const WarehouseContext = createContext<WarehouseContextType | undefined>(undefined)
@@ -114,12 +114,12 @@ export const WarehouseProvider = ({ children }: { children: React.ReactNode }) =
                 isLoading,
                 error,
                 fetchWarehouses,
+                fetchSections,
                 addWarehouse,
                 updateWarehouse,
                 deleteWarehouse,
                 selectedWarehouse,
                 setSelectedWarehouse,
-                fetchSection: fetchSections
             }}
         >
             {children}

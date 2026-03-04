@@ -2,6 +2,7 @@
 
 import { AuthProvider } from "@/contexts/AuthContext"
 import { ProductProvider } from "@/contexts/ProductContext"
+import { StaffProvider } from "@/contexts/StaffContext"
 import { WarehouseProvider } from "@/contexts/WarehouseContext"
 
 export function AppProviders({ children }: { children: React.ReactNode }) {
@@ -9,7 +10,9 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
         <AuthProvider>
             <ProductProvider>
                 <WarehouseProvider>
-                    {children}
+                    <StaffProvider>
+                        {children}
+                    </StaffProvider>
                 </WarehouseProvider>
             </ProductProvider>
         </AuthProvider >
