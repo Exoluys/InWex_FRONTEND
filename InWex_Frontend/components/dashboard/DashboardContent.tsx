@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import Navbar from "@/components/dashboard/navbar/Navbar";
 import { useAuth } from "@/contexts/AuthContext";
+import DashboardAnalysis from "./DashboardAnalysis";
 
 const DashBoardContent = () => {
     const { user } = useAuth()
@@ -98,7 +99,7 @@ const DashBoardContent = () => {
                 </div>
 
                 <div className="mt-14">
-                    {/* Cards Display */}
+                    <DashboardAnalysis />
                 </div>
             </main >
         </>

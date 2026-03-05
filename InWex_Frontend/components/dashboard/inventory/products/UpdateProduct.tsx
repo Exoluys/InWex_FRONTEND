@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 import { useProduct } from "@/contexts/ProductContext";
 import { useEffect, useRef } from "react";
 import { updateProductSchema, UpdateProductValues } from "@/lib/schemas/product/updateProduct.schema";
-import { Product } from "@/lib/types";
+import { Product } from "@/lib/types/types";
 
 const UpdateProduct = ({ product }: { product: Product }) => {
     const { updateProduct, categories } = useProduct()

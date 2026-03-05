@@ -7,7 +7,7 @@ import {
     CardFooter,
     CardTitle,
 } from "@/components/ui/card"
-import { Product } from "@/lib/types"
+import { Product } from "@/lib/types/types"
 import { useRouter } from "next/navigation"
 
 type ProductCardProps = {

@@ -1,7 +1,7 @@
 "use client"
 
 import { api } from "@/lib/api"
-import { Roles, UserData } from "@/lib/types"
+import { Roles, UserData } from "@/lib/types/types"
 import axios from "axios"
 import { useRouter } from "next/navigation"
 import { createContext, useCallback, useContext, useState, useEffect } from "react"

@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Warehouse } from "@/lib/types"
+import { Warehouse } from "@/lib/types/types"
 import { useRouter } from "next/navigation"
 
 type WarehouseCardProps = {

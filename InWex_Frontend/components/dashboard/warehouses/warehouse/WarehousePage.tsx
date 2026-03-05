@@ -1,4 +1,4 @@
-import { Warehouse } from "@/lib/types"
+import { Warehouse } from "@/lib/types/types"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { Calendar, Layers, Package, Users } from "lucide-react"

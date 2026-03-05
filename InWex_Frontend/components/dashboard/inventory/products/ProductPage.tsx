@@ -1,4 +1,4 @@
-import { Category, Product } from "@/lib/types"
+import { Category, Product } from "@/lib/types/types"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { Package, Tag, Barcode, TrendingUp, Box, Calendar } from "lucide-react"

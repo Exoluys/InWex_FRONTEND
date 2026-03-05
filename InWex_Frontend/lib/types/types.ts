@@ -43,14 +43,14 @@ export type Warehouse = {
     created_at: string
 }
 
-export type Staff = {
-    id: number
-    name: string
-}
-
 export type Section = {
     id: number
     name: string
     warehouse: string
     created_at: string
+}
+
+export type Staff = {
+    id: number
+    name: string
 }

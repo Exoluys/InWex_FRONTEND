@@ -1,7 +1,7 @@
 "use client"
 
 import { WarehouseValues } from "@/lib/schemas/warehouse/addWarehouse.schema"
-import { Section, Warehouse } from "@/lib/types"
+import { Section, Warehouse } from "@/lib/types/types"
 import { createContext, useCallback, useContext, useEffect, useState } from "react"
 import { useAuth } from "./AuthContext"
 import { useRouter } from "next/navigation"
@@ -14,7 +14,7 @@ export type WarehouseContextType = {
     count: number | null
     isLoading: boolean
     error: string | null
-    fetchWarehouses: (showLoading?: boolean) => void
+    fetchWarehouses: (showLoading?: boolean) => Promise<void>
     fetchSections: (warehouseId: number) => Promise<void>
     addWarehouse: (data: WarehouseValues) => Promise<void>
     updateWarehouse: (id: number, data: Partial<Warehouse>) => Promise<void>

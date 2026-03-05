@@ -1,7 +1,7 @@
 "use client"
 
 import { api } from "@/lib/api"
-import { Category, Product } from "@/lib/types"
+import { Category, Product } from "@/lib/types/types"
 import { createContext, useCallback, useContext, useEffect, useState } from "react"
 import { useAuth } from "./AuthContext"
 import { ProductValues } from "@/lib/schemas/product/addProduct.schema"
@@ -16,8 +16,8 @@ type ProductContextType = {
     count: number | null
     isLoading: boolean
     error: string | null
-    fetchProducts: (showLoading?: boolean, url?: string) => void
-    fetchCategory: () => void
+    fetchProducts: (showLoading?: boolean, url?: string) => Promise<void>
+    fetchCategory: () => Promise<void>
     addProduct: (product: ProductValues) => Promise<void>
     updateProduct: (productId: number, updatedProduct: UpdateProductPayload) => Promise<void>
     deleteProduct: (productId: number) => Promise<void>

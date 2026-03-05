@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { useForm } from "react-hook-form"
 import { useWarehouse } from "@/contexts/WarehouseContext"
 import { useEffect } from "react"
-import { Warehouse } from "@/lib/types"
+import { Warehouse } from "@/lib/types/types"
 import { updateWarehouseSchema, UpdateWarehouseValues } from "@/lib/schemas/warehouse/updateWarehouse.schema"
 
 const UpdateWarehouse = ({ warehouse }: { warehouse: Warehouse }) => {
