@@ -11,6 +11,7 @@ import {
     Pagination,
     PaginationContent,
     PaginationItem,
+    PaginationLink,
     PaginationNext,
     PaginationPrevious,
 } from "@/components/ui/pagination"
@@ -18,7 +19,7 @@ import { ProductCardShimmer } from "./ProductCardShimmer";
 
 const InventoryContent = () => {
     const [selected, setSelected] = useState("Product")
-    const { products, count, isLoading, error, fetchProducts, fetchCategory, goToNextPage, goToPrevPage, hasNext, hasPrev } = useProduct()
+    const { products, count, isLoading, error, fetchProducts, fetchCategory, goToPage, goToNextPage, goToPrevPage, hasNext, hasPrev, total_pages, current_page } = useProduct()
     const router = useRouter()
 
     const options = [
@@ -27,6 +28,8 @@ const InventoryContent = () => {
         "Price: High To Low",
         "Price: Low to High",
     ]
+
+    const pages = Array.from({ length: total_pages }, (_, i) => i + 1)
 
     useEffect(() => {
         fetchProducts(true)
@@ -132,18 +135,33 @@ const InventoryContent = () => {
                     <div className="h-20 flex justify-center items-center">
                         <Pagination>
                             <PaginationContent>
+
                                 <PaginationItem>
                                     <PaginationPrevious
                                         onClick={goToPrevPage}
                                         className={!hasPrev ? "pointer-events-none opacity-50" : "cursor-pointer"}
                                     />
                                 </PaginationItem>
+
+                                {pages.map((page) => (
+                                    <PaginationItem key={page}>
+                                        <PaginationLink
+                                            className="cursor-pointer"
+                                            onClick={() => goToPage(page)}
+                                            isActive={current_page === page}
+                                        >
+                                            {page}
+                                        </PaginationLink>
+                                    </PaginationItem>
+                                ))}
+
                                 <PaginationItem>
                                     <PaginationNext
                                         onClick={goToNextPage}
                                         className={!hasNext ? "pointer-events-none opacity-50" : "cursor-pointer"}
                                     />
                                 </PaginationItem>
+
                             </PaginationContent>
                         </Pagination>
                     </div>

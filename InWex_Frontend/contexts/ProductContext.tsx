@@ -7,6 +7,7 @@ import { useAuth } from "./AuthContext"
 import { ProductValues } from "@/lib/schemas/product/addProduct.schema"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
+import { PAGINATION_URL } from "@/components/config"
 
 type UpdateProductPayload = Omit<Partial<Product>, 'image'> & { image?: File }
 
@@ -23,22 +24,24 @@ type ProductContextType = {
     deleteProduct: (productId: number) => Promise<void>
     selectedProduct: Product | null
     setSelectedProduct: (p: Product | null) => void
+    goToPage: (page: number) => void
     goToNextPage: () => void
     goToPrevPage: () => void
     hasNext: boolean
     hasPrev: boolean
+    total_pages: number
+    current_page: number
 }
 
 const ProductContext = createContext<ProductContextType | undefined>(undefined)
 
 export const ProductProvider = ({ children }: { children: React.ReactNode }) => {
     const [products, setProducts] = useState<Product[]>([])
-    const [pagination, setPagination] = useState<{
-        next: string | null,
-        prev: string | null
-    }>({
-        next: null,
-        prev: null
+    const [pagination, setPagination] = useState({
+        next: null as string | null,
+        prev: null as string | null,
+        total_pages: null as number | null,
+        current_page: 1
     })
     const [count, setCount] = useState<number | null>(null)
     const [categories, setCategories] = useState<Category[]>([])
@@ -47,6 +50,10 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
     const { user } = useAuth()
     const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
     const router = useRouter()
+
+    const goToPage = (page: number) => {
+        fetchProducts(true, `${PAGINATION_URL}?page=${page}`)
+    }
 
     const goToNextPage = () => {
         if (pagination.next) {
@@ -72,7 +79,9 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
 
             setPagination({
                 next: res.data.next,
-                prev: res.data.previous
+                prev: res.data.previous,
+                total_pages: res.data.total_pages,
+                current_page: res.data.current_page
             })
         }
         catch (err) {
@@ -165,10 +174,13 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
                 deleteProduct,
                 selectedProduct,
                 setSelectedProduct,
+                goToPage,
                 goToNextPage,
                 goToPrevPage,
                 hasNext: !!pagination.next,
-                hasPrev: !!pagination.prev
+                hasPrev: !!pagination.prev,
+                total_pages: pagination.total_pages ?? 0,
+                current_page: pagination.current_page
             }}
         >
             {children}
