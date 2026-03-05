@@ -9,6 +9,7 @@ export type UserData = {
     fullname: string
     email: string
     avatar: string
+    contact_number: number
     roles: Roles
 }
 
@@ -52,5 +53,8 @@ export type Section = {
 
 export type Staff = {
     id: number
+    company: number
+    is_confirmed: boolean
     name: string
+    user: UserData
 }
