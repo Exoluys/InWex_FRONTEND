@@ -1,7 +1,7 @@
 "use client"
 
 import { WarehouseValues } from "@/lib/schemas/warehouse/addWarehouse.schema"
-import { Section, Warehouse } from "@/lib/types/types"
+import { Product, Section, Warehouse } from "@/lib/types/types"
 import { createContext, useCallback, useContext, useEffect, useState } from "react"
 import { useAuth } from "./AuthContext"
 import { useRouter } from "next/navigation"
@@ -11,11 +11,13 @@ import { toast } from "sonner"
 export type WarehouseContextType = {
     warehouses: Warehouse[]
     sections: Section[]
+    products: Product[]
     count: number | null
     isLoading: boolean
     error: string | null
     fetchWarehouses: (showLoading?: boolean) => Promise<void>
     fetchSections: (warehouseId: number) => Promise<void>
+    fetchProducts: (warehouseId: number, showLoading?: boolean) => Promise<void>
     addWarehouse: (data: WarehouseValues) => Promise<void>
     updateWarehouse: (id: number, data: Partial<Warehouse>) => Promise<void>
     deleteWarehouse: (id: number) => Promise<void>
@@ -28,6 +30,7 @@ const WarehouseContext = createContext<WarehouseContextType | undefined>(undefin
 export const WarehouseProvider = ({ children }: { children: React.ReactNode }) => {
     const [warehouses, setWarehouses] = useState<Warehouse[]>([])
     const [sections, setSections] = useState<Section[]>([])
+    const [products, setProducts] = useState<Product[]>([])
     const [count, setCount] = useState<number | null>(null)
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
@@ -38,6 +41,7 @@ export const WarehouseProvider = ({ children }: { children: React.ReactNode }) =
     const fetchWarehouses = useCallback(async (showLoading = true) => {
         if (showLoading) setIsLoading(true)
         setError(null)
+
         try {
             const res = await api.get("/warehouse/warehouse")
             setWarehouses(res.data.results)
@@ -58,6 +62,22 @@ export const WarehouseProvider = ({ children }: { children: React.ReactNode }) =
         }
         catch (err) {
             setError(err instanceof Error ? err.message : "An error occurred")
+        }
+    }, [])
+
+    const fetchProducts = useCallback(async (warehouseId: number, showLoading = true) => {
+        if (showLoading) setIsLoading(true)
+        setError(null)
+
+        try {
+            const res = await api.get(`api/warehouse/get-warehouse-products?warehouse_id=${warehouseId}`)
+            setProducts(res.data)
+        }
+        catch (err) {
+            setError(err instanceof Error ? err.message : "An error occurred")
+        }
+        finally {
+            if (showLoading) setIsLoading(false)
         }
     }, [])
 
@@ -101,6 +121,7 @@ export const WarehouseProvider = ({ children }: { children: React.ReactNode }) =
         if (!user) {
             setWarehouses([])
             setSections([])
+            setProducts([])
             setError(null)
         }
     }, [user])
@@ -110,11 +131,13 @@ export const WarehouseProvider = ({ children }: { children: React.ReactNode }) =
             value={{
                 warehouses,
                 sections,
+                products,
                 count,
                 isLoading,
                 error,
                 fetchWarehouses,
                 fetchSections,
+                fetchProducts,
                 addWarehouse,
                 updateWarehouse,
                 deleteWarehouse,

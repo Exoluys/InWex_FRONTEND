@@ -53,8 +53,12 @@ export type Section = {
 
 export type Staff = {
     id: number
-    company: number
-    is_confirmed: boolean
     name: string
+    company: number
+    warehouse: number
+    sections: number
+    can_manage_warehouse: boolean
+    can_create_orders: boolean
+    is_confirmed: boolean
     user: UserData
 }
