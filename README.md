@@ -1,164 +1,110 @@
-🖥 WHS Frontend (Warehouse Management System)
+# 🖥️ WHS Frontend (Warehouse Management System)
 
-A modern B2B Warehouse Management System UI built using Next.js + TypeScript, designed for fast, scalable, and API-driven warehouse operations.
+A modern B2B Warehouse Management System UI built using **Next.js + TypeScript**, designed for fast, scalable, and API-driven warehouse operations. The frontend connects directly to the live WHS backend API to manage inventory, warehouses, and staff in real time.
 
-The frontend connects directly to the live WHS backend API to manage inventory, warehouses, and staff in real time.
+# 🌐 Live Application
 
-🌐 Live Application
-
-Frontend
-➡ https://inwex.tech/
+**Frontend:** [https://inwex.tech/](https://inwex.tech/)
 
 The system is fully operational and accessible publicly.
 
-⚡ Tech Stack
-Technology	Purpose
-Next.js (App Router)	React framework for server/client rendering
-TypeScript	Static typing for maintainable code
-TailwindCSS	Utility-first styling
-shadcn/ui	Accessible and reusable UI components
-Lucide Icons	Clean modern icons
-Recharts	Data visualization for dashboard
-Context API	Global state management
-Sonner	Toast notifications
-Vercel	Frontend hosting & deployment
+# ⚡ Tech Stack
 
-🧩 Core Application Modules
+| Technology | Purpose |
+| :--- | :--- |
+| **Next.js (App Router)** | React framework for server/client rendering |
+| **TypeScript** | Static typing for maintainable code |
+| **TailwindCSS** | Utility-first styling |
+| **shadcn/ui** | Accessible and reusable UI components |
+| **Lucide Icons** | Clean modern icons |
+| **Recharts** | Data visualization for dashboard |
+| **Context API** | Global state management |
+| **Sonner** | Toast notifications |
+| **Vercel** | Frontend hosting & deployment |
 
-The frontend is divided into several feature-based modules.
+---
 
-Module	Description
-Dashboard	Displays analytics, low stock alerts, and warehouse insights
-Inventory	Product listing, creation, updates, and management
-Warehouses	Manage warehouses and warehouse information
-Staff	Manage employees and staff assignments
-Authentication	Login system with token authentication
+# 🧩 Core Application Modules
 
-🔐 Authentication System
+The frontend is divided into several feature-based modules:
 
-Authentication uses token-based login powered by Knox from the backend.
+* **📊 Dashboard:** Displays analytics, low stock alerts, and warehouse insights.
+* **📦 Inventory:** Product listing, creation, updates, and management.
+* **🏢 Warehouses:** Manage physical locations and warehouse information.
+* **👥 Staff:** Manage employees and role assignments.
+* **🔐 Authentication:** Login system with secure token handling.
 
-Flow:
+---
 
-1️⃣ User logs in with email + password
-2️⃣ Backend returns authentication token
-3️⃣ Token stored in client session
-4️⃣ All API requests include the token
+# 🔐 Authentication System
 
-Example header used by the frontend:
+Authentication uses token-based login powered by **Knox** on the backend.
 
-Authorization: Token <user_token>
+### 🔄 Authentication Flow:
+1. User logs in with email + password.
+2. Backend returns a unique authentication token.
+3. Token is stored in the client session.
+4. All subsequent API requests include the token in the header:
 
-This allows secure communication with protected backend APIs.
+`Authorization: Token <user_token>`
 
-👥 Role-Based Interface
+---
 
-The frontend dynamically adjusts UI features depending on the user role returned by the backend.
+# 👥 Role-Based Interface (RBAC)
 
-Role	Interface Permissions
-Admin	Full system control
-Business	Manage warehouses and employees
-Manager	Manage inventory and staff
-Warehouse Staff	Update inventory and perform warehouse tasks
+The UI dynamically adjusts features based on the user role returned by the API.
 
-The UI hides or shows features depending on the role flags returned by the API.
+| Role | Interface Permissions |
+| :--- | :--- |
+| **Admin** | Full system control & configuration |
+| **Business** | Manage warehouses and employees |
+| **Manager** | Manage inventory and staff tasks |
+| **Warehouse Staff** | Update inventory and warehouse actions |
 
-📦 Inventory Interface
+---
 
-The inventory module provides tools to manage warehouse products.
+# 📊 Dashboard & Analytics
 
-Features:
+The dashboard provides a visual overview of warehouse health using **Recharts** for interactive visualization. Key metrics include:
+* Total inventory statistics
+* Low stock warnings & automated alerts
+* Inventory distribution across locations
+* Real-time warehouse insights
 
-• View product inventory
-• Add new products
-• Update product information
-• Delete products
-• Search and filter products
+---
 
-📊 Dashboard Analytics
+# 🔎 Search & Filtering System
 
-The dashboard provides a visual overview of warehouse activity.
+The application includes high-performance filtering components used across all modules:
+* **Text Search:** Instant lookup for products or staff.
+* **Category Filters:** Sort by warehouse, status, or type.
+* **Real-time Updates:** UI filters dynamically without page reloads.
 
-Displayed information includes:
+---
 
-• Total inventory statistics
-• Low stock warnings
-• Inventory distribution charts
-• Warehouse insights
+# 🧠 State Management
 
-Charts are built using Recharts for interactive visualization.
+Global application data is managed using the **React Context API**, keeping the app lightweight and scalable without the overhead of Redux.
 
-🔎 Search & Filtering System
+| Context | Purpose |
+| :--- | :--- |
+| `AuthContext` | Handles user sessions and authentication state |
+| `ProductContext` | Manages inventory data and CRUD operations |
+| `WarehouseContext` | Stores and updates warehouse information |
+| `StaffContext` | Manages employee data and actions |
+| `DashboardContext` | Handles global statistics and analytics |
 
-The application includes reusable search and filtering components.
+---
 
-Capabilities:
+# 🚀 Deployment
 
-• Text search
-• Category filters
-• Real-time UI filtering
-• Reusable across multiple modules
+The frontend is deployed using **Vercel**, enabling:
+* **CI/CD:** Automatic deployment on every push.
+* **Global CDN:** Fast delivery to any location.
+* **Serverless:** Scalable edge rendering for high performance.
 
-This allows users to quickly locate inventory items, warehouses, or staff.
+---
 
-🧠 State Management
+# 📌 Project Goal
 
-Global application data is managed using React Context API.
-
-Contexts used in the application:
-
-Context	Purpose
-AuthContext	Authentication and user session
-ProductContext	Inventory state and operations
-WarehouseContext	Warehouse data management
-StaffContext	Staff data and actions
-DashboardContext	Dashboard statistics and analytics
-
-This approach keeps the application lightweight and scalable without Redux.
-
-🔔 Notification System
-
-User feedback is provided using toast notifications.
-
-Examples include:
-
-• Product added successfully
-• Inventory updated
-• Error loading data
-• Staff member created
-
-Notifications ensure users receive immediate feedback on actions.
-
-🎨 UI Design
-
-The interface focuses on clean, responsive, and professional design.
-
-Key UI characteristics:
-
-• Fully responsive layout
-• Modern dashboard style
-• Accessible components via shadcn/ui
-• Consistent color system
-• Smooth user interactions
-
-The goal is to provide enterprise-grade usability for warehouse operations.
-
-🚀 Deployment
-
-The frontend is deployed using Vercel, enabling:
-
-• Automatic CI/CD deployment
-• Fast global CDN delivery
-• Serverless edge rendering
-• Zero-downtime updates
-
-Every push to the repository automatically updates the live application.
-
-📌 Project Goal
-
-WHS aims to provide a scalable warehouse management platform for B2B businesses, combining:
-
-• Powerful backend APIs
-• Modern frontend experience
-• Role-based access control
-• Real-time warehouse insights
+WHS aims to provide a scalable warehouse management platform for B2B businesses by combining a powerful backend API with a modern, high-performance frontend experience.
