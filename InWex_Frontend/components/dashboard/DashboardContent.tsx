@@ -1,20 +1,16 @@
 "use client";
 
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group"
-import { Calendar } from "@/components/ui/calendar"
-import { CalendarDays, ChevronDown, SearchIcon } from "lucide-react"
 import { useState } from "react"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import Navbar from "@/components/dashboard/navbar/Navbar";
 import { useAuth } from "@/contexts/AuthContext";
 import DashboardAnalysis from "./DashboardAnalysis";
+import { SearchIcon } from "lucide-react";
 
 const DashBoardContent = () => {
     const { user } = useAuth()
 
-    const [today, setToday] = useState(() => {
+    const [today] = useState(() => {
         const current = new Date()
         const weekday = current.toLocaleString("en-US", { weekday: "short" });
         const day = current.getDate();
@@ -23,86 +19,45 @@ const DashBoardContent = () => {
         return `${weekday}, ${day} ${month}`;
     })
 
-    const [selected, setSelected] = useState("This month")
-
-    const options = [
-        "This month",
-        "Last month",
-        "3 months",
-        "6 months",
-        "1 year",
-        "All time"
-    ]
-
-    const [date, setDate] = useState<Date | undefined>(new Date())
-
     const navbarLeftContent = (
-        <div className="flex items-center space-x-4">
-            <InputGroup className="border-none w-90 h-11 pl-4">
-                <InputGroupInput placeholder="Search" />
+        <div className="flex items-center space-x-6">
+            <InputGroup className="bg-zinc-900/50 border-none w-110 h-10 pl-4 rounded-xl focus-within:bg-zinc-900 transition-colors">
+                <InputGroupInput
+                    placeholder="Search analytics, products..."
+                    className="text-xs placeholder:text-zinc-600 text-zinc-300"
+                />
                 <InputGroupAddon>
-                    <SearchIcon className="h-5! w-5!" />
+                    <SearchIcon className="h-4 w-4 text-zinc-500" />
                 </InputGroupAddon>
             </InputGroup>
-            <p className="text-sm">Today, {today}</p>
+            <div className="hidden md:flex flex-col">
+                <p className="text-[10px] uppercase font-bold text-zinc-500 tracking-widest">Current Date</p>
+                <p className="text-sm font-medium text-zinc-300">{today}</p>
+            </div>
         </div>
     )
 
     return (
-        <>
+        <div className="w-full px-4 sm:px-6 md:px-10 pb-20">
             <Navbar leftContent={navbarLeftContent} />
 
-            <main className="mt-12">
-                <div className="flex justify-between">
-                    <div>
-                        <h1 className="text-4xl font-bold">Hello, {user?.fullname || ""}!</h1>
-                        <p>Hope you&#39;re having a great day.</p>
-                    </div>
-                    <div className="flex items-center space-x-4">
-                        <div>
-                            <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                    <button className="flex items-center gap-2 rounded-sm bg-zinc-900 px-4.5 py-2.5 text-sm text-white shadow-md hover:bg-zinc-800">
-                                        {selected}
-                                        <ChevronDown className="h-4 w-4 opacity-70" />
-                                    </button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent side="bottom" align="start" sideOffset={8} className="px-4 py-3 rounded-lg bg-zinc-900 text-white border-none">
-                                    {options.map((option) => (
-                                        <DropdownMenuItem
-                                            key={option}
-                                            onClick={() => setSelected(option)}
-                                            className="cursor-pointer focus:bg-zinc-800"
-                                        >
-                                            {option}
-                                        </DropdownMenuItem>
-                                    ))}
-                                </DropdownMenuContent>
-                            </DropdownMenu>
-                        </div>
-                        <Popover>
-                            <PopoverTrigger asChild>
-                                <Button variant="secondary" size="icon-lg">
-                                    <CalendarDays className="h-4.5! w-4.5!" />
-                                </Button>
-                            </PopoverTrigger>
-
-                            <PopoverContent className="w-auto p-0" align="end">
-                                <Calendar
-                                    mode="single"
-                                    selected={date}
-                                    onSelect={setDate}
-                                />
-                            </PopoverContent>
-                        </Popover>
+            <main className="mt-12 md:mt-16">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+                    <div className="space-y-1">
+                        <h1 className="text-5xl font-bold text-white tracking-tight">
+                            Hello, {user?.fullname?.split(' ')[0] || "User"}!
+                        </h1>
+                        <p className="text-zinc-500 text-lg">
+                            Here is what&apos;s happening with your inventory today.
+                        </p>
                     </div>
                 </div>
 
-                <div className="mt-14">
+                <div className="mt-16">
                     <DashboardAnalysis />
                 </div>
             </main >
-        </>
+        </div >
     )
 }
 

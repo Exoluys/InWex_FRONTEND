@@ -1,9 +1,9 @@
+"use client"
+
 import { Warehouse } from "@/lib/types/types"
-import { Badge } from "@/components/ui/badge"
-import { Separator } from "@/components/ui/separator"
-import { AlertTriangle, Calendar, Layers, Loader2, Package, Users } from "lucide-react"
+import { Calendar, Layers, Loader2, Package, Users, Edit3, Trash2, ArrowLeft, Building2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
 import { useWarehouse } from "@/contexts/WarehouseContext"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
@@ -29,141 +29,141 @@ const WarehousePage = ({ warehouse }: { warehouse: Warehouse }) => {
     }, [fetchProducts, warehouse.id])
 
     return (
-        <div className="p-6 max-w-6xl mx-auto space-y-6">
-            <Card className="bg-transparent border-none">
-                <CardContent className="p-6 space-y-6">
-
-                    {/* Top Section */}
-                    <div className="space-y-2">
-                        <Badge variant="secondary" className="w-fit">Warehouse</Badge>
-                        <h1 className="text-3xl font-semibold tracking-tight">{warehouse.name}</h1>
-                        <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
-                            <div className="flex items-center gap-2">
-                                <Calendar size={14} />
-                                Created: {new Date(warehouse.created_at).toLocaleDateString()}
+        <div className="mt-8 md:mt-12 w-full px-4 sm:px-6 md:px-10 pb-20 space-y-10">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+                <div className="space-y-4">
+                    <Button
+                        variant="ghost"
+                        onClick={() => router.back()}
+                        className="text-zinc-500 hover:text-white hover:bg-zinc-900/50 -ml-2 transition-colors w-fit"
+                    >
+                        <ArrowLeft className="mr-2 h-4 w-4" />
+                        Back to List
+                    </Button>
+                    <div className="flex flex-col gap-2">
+                        <div className="flex items-center gap-3">
+                            <h1 className="text-4xl font-bold text-white tracking-tight">{warehouse.name}</h1>
+                            <div className="flex items-center gap-1.5 bg-emerald-500/10 text-emerald-500 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md">
+                                <span className="h-1 w-1 rounded-full bg-emerald-500 animate-pulse" />
+                                Operational
                             </div>
                         </div>
-                        <div className="flex flex-wrap gap-2 pt-1">
-                            <Badge variant="outline" className="flex items-center gap-1">
-                                <Layers size={12} /> {dummySections.length} Sections
-                            </Badge>
-                            <Badge variant="outline" className="flex items-center gap-1">
-                                <Users size={12} /> {dummyStaff.length} Staff
-                            </Badge>
+                        <div className="flex items-center gap-4 text-zinc-500 text-sm">
+                            <span className="flex items-center gap-1.5"><Calendar size={14} /> Created {new Date(warehouse.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+                            <span className="flex items-center gap-1.5"><Building2 size={14} /> ID: {warehouse.company}</span>
                         </div>
                     </div>
+                </div>
 
-                    <Separator />
+                <div className="flex gap-3">
+                    <Button
+                        variant="secondary"
+                        onClick={() => router.push(`/dashboard/warehouse/update/${warehouse.id}`)}
+                        className="bg-zinc-900 hover:bg-zinc-800 text-zinc-300 rounded-xl border-none px-6"
+                    >
+                        <Edit3 className="mr-2 h-4 w-4" />
+                        Edit
+                    </Button>
+                    <Button
+                        variant="destructive"
+                        onClick={() => {
+                            if (confirm("Are you sure?")) {
+                                deleteWarehouse(warehouse.id)
+                                router.push('/dashboard/warehouse')
+                            }
+                        }}
+                        className="rounded-xl border-none px-6"
+                    >
+                        <Trash2 className="mr-2 h-4 w-4" />
+                        Delete
+                    </Button>
+                </div>
+            </div>
 
-                    {isLoading && (
-                        <div className="flex justify-center items-center py-24">
-                            <Card className="bg-transparent w-full max-w-sm border-none">
-                                <CardContent className="flex flex-col items-center gap-4 py-10 text-center">
-                                    <div className="bg-zinc-800 rounded-full p-3">
-                                        <Loader2 className="h-6 w-6 text-zinc-400 animate-spin" />
-                                    </div>
-                                    <div className="space-y-1">
-                                        <p className="text-zinc-300 font-semibold text-lg">Loading Warehouse Details</p>
-                                        <p className="text-zinc-500 text-sm">Please wait a moment...</p>
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        </div>
-                    )}
+            {isLoading && (
+                <div className="flex flex-col justify-center items-center py-32 gap-4">
+                    <Loader2 className="h-10 w-10 text-zinc-600 animate-spin" />
+                    <p className="text-zinc-500 animate-pulse">Loading Warehouse Profile...</p>
+                </div>
+            )}
 
-                    {error && (
-                        <div className="flex justify-center items-center py-24">
-                            <Card className="bg-transparent w-full max-w-sm border-none">
-                                <CardContent className="flex flex-col items-center gap-4 py-10 text-center">
-                                    <div className="bg-red-500/20 rounded-full p-3">
-                                        <AlertTriangle className="h-6 w-6 text-red-400" />
+            {!isLoading && !error && (
+                <div className="grid grid-cols-1 xl:grid-cols-3 gap-10 items-start">
+                    <div className="xl:col-span-2 space-y-10">
+                        <section>
+                            <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                                <Layers size={20} className="text-zinc-500" /> Infrastructure Sections
+                            </h2>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                {dummySections.map((section) => (
+                                    <div key={section.id} className="p-6 bg-zinc-950 rounded-2xl border-none">
+                                        <p className="text-[10px] text-zinc-500 uppercase font-bold tracking-widest">Storage Zone</p>
+                                        <p className="text-lg font-semibold text-zinc-100 mt-1">{section.name}</p>
                                     </div>
-                                    <div className="space-y-1">
-                                        <p className="text-red-400 font-semibold text-lg">Something went wrong</p>
-                                        <p className="text-red-400/70 text-sm">{error}</p>
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        </div>
-                    )}
+                                ))}
+                            </div>
+                        </section>
 
-                    {!isLoading && !error && (
-                        <>
-                            {/* Sections */}
-                            < div >
-                                <h2 className="text-lg font-semibold mb-4">Sections</h2>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                                    {dummySections.map((section) => (
-                                        <Card key={section.id} className="p-4 bg-zinc-900 border-zinc-800">
-                                            <p className="text-xs text-muted-foreground uppercase tracking-wide">Section</p>
-                                            <p className="text-lg font-semibold mt-1">{section.name}</p>
-                                        </Card>
-                                    ))}
-                                </div>
+                        <section>
+                            <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                                <Users size={20} className="text-zinc-500" /> Personnel Assigned
+                            </h2>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                {dummyStaff.map((staff) => (
+                                    <div key={staff.id} className="p-6 bg-zinc-900/40 rounded-2xl border-none group hover:bg-zinc-900/60 transition-colors">
+                                        <p className="text-[10px] text-zinc-500 uppercase font-bold tracking-widest">{staff.role}</p>
+                                        <p className="text-lg font-semibold text-zinc-100 mt-1">{staff.name}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
+                    </div>
+
+                    <aside className="xl:col-span-1 sticky top-10">
+                        <div className="bg-zinc-950 rounded-3xl p-6 border border-zinc-900/50">
+                            <div className="flex items-center justify-between mb-6">
+                                <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                                    <Package size={20} className="text-zinc-500" /> Inventory
+                                </h2>
+                                <Badge className="bg-zinc-900 text-zinc-400 border-zinc-800 rounded-full">
+                                    {products.length}
+                                </Badge>
                             </div>
 
-                            <Separator />
-
-                            {/* Staff */}
-                            <div>
-                                <h2 className="text-lg font-semibold mb-4">Staff</h2>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                                    {dummyStaff.map((staff) => (
-                                        <Card key={staff.id} className="p-4 bg-zinc-900 border-zinc-800">
-                                            <p className="text-xs text-muted-foreground uppercase tracking-wide">{staff.role}</p>
-                                            <p className="text-lg font-semibold mt-1">{staff.name}</p>
-                                        </Card>
-                                    ))}
-                                </div>
-                            </div>
-
-                            <Separator />
-
-                            {/* Products */}
-                            <div>
-                                <h2 className="text-lg font-semibold mb-4">Products</h2>
-                                <div className="flex flex-col divide-y divide-zinc-800 rounded-lg border border-zinc-800 overflow-hidden">
-                                    {products.length > 0 ? (
-                                        products.map((product) => (
-                                            <div key={product.id} className="flex items-center justify-between px-4 py-3 bg-zinc-900 hover:bg-zinc-800 transition-colors">
-                                                <div className="flex items-center gap-3">
-                                                    <Package size={16} className="text-zinc-500" />
-                                                    <span className="text-sm font-medium text-zinc-200">{product.name}</span>
+                            <div className="space-y-2 max-h-125 overflow-y-auto pr-2">
+                                {products.length > 0 ? (
+                                    products.map((product) => (
+                                        <div
+                                            key={product.id}
+                                            className="flex items-center justify-between p-3 bg-zinc-900/30 rounded-xl hover:bg-zinc-900/50 transition-all cursor-pointer group border border-transparent hover:border-zinc-800"
+                                            onClick={() => router.push(`/dashboard/inventory/products/${product.id}`)}
+                                        >
+                                            <div className="flex items-center gap-3 min-w-0">
+                                                <div className="bg-zinc-800 p-1.5 rounded-lg text-zinc-500 group-hover:text-white transition-colors shrink-0">
+                                                    <Package size={14} />
                                                 </div>
-                                                <span className="text-sm text-zinc-400">
-                                                    <span className="font-medium text-zinc-300">{product.stock ?? 1}</span> units
+                                                <span className="text-xs font-medium text-zinc-300 group-hover:text-white truncate">
+                                                    {product.name}
                                                 </span>
                                             </div>
-                                        ))
-                                    ) : (
-                                        <div className="py-4 text-center text-zinc-500 text-sm">
-                                            No products assigned to this warehouse.
+                                            <div className="text-right shrink-0">
+                                                <span className="text-xs font-bold text-white block">{product.stock ?? 1}</span>
+                                                <span className="text-[10px] text-zinc-600 uppercase font-bold tracking-tighter">qty</span>
+                                            </div>
                                         </div>
-                                    )}
-                                </div>
+                                    ))
+                                ) : (
+                                    <div className="py-10 text-center">
+                                        <Package size={32} className="mx-auto text-zinc-800 mb-3" />
+                                        <p className="text-zinc-500 text-xs text-balance">No products in this facility.</p>
+                                    </div>
+                                )}
                             </div>
-
-                            <Separator />
-
-                            {/* Actions */}
-                            <div className="flex justify-end gap-2">
-                                <Button
-                                    onClick={() => deleteWarehouse(warehouse.id)}
-                                    variant="destructive"
-                                >
-                                    Delete
-                                </Button>
-                                <Button
-                                    onClick={() => router.push(`/dashboard/warehouse/update/${warehouse.id}`)}
-                                >
-                                    Update
-                                </Button>
-                            </div>
-                        </>
-                    )}
-                </CardContent>
-            </Card>
-        </div >
+                        </div>
+                    </aside>
+                </div>
+            )}
+        </div>
     )
 }
 

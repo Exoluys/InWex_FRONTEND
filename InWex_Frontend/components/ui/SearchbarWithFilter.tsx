@@ -17,26 +17,43 @@ type SearchbarProps = {
 
 const SearchbarWithFilter = ({ filters, onFilterSelect }: SearchbarProps) => {
     return (
-        <div className="flex space-x-5 items-center">
-            <InputGroup className="border-none w-90 h-11 pl-4">
-                <InputGroupInput placeholder="Search" />
+        <div className="flex gap-3 md:gap-5 items-center w-full">
+
+            <InputGroup className="bg-zinc-950 border-none w-full max-w-110 h-11 pl-4 rounded-xl focus-within:ring-1 focus-within:ring-zinc-700 transition-all">
+                <InputGroupInput
+                    placeholder="Search"
+                    className="placeholder:text-zinc-600 text-zinc-100 bg-transparent"
+                />
                 <InputGroupAddon>
-                    <Search className="h-5! w-5!" />
+                    <Search className="h-5! w-5! text-zinc-600" />
                 </InputGroupAddon>
             </InputGroup>
+
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                    <Button variant="secondary" className="p-5! cursor-pointer">
-                        <Funnel className="h-4.5! w-4.5!" />
-                        Filter
+                    <Button
+                        variant="secondary"
+                        className="h-11 px-5 cursor-pointer rounded-xl bg-zinc-950 hover:bg-zinc-900 text-zinc-400 hover:text-white border-none transition-all flex items-center gap-2"
+                    >
+                        <Funnel className="h-4! w-4!" />
+                        <span className="text-sm font-medium hidden xs:inline">Filter</span>
                     </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent side="bottom" align="start" sideOffset={8} className="px-2 py-3 rounded-sm bg-zinc-900 text-white border-none">
+
+                <DropdownMenuContent
+                    side="bottom"
+                    align="end"
+                    sideOffset={8}
+                    className="px-1.5 py-1.5 rounded-xl bg-zinc-950 text-zinc-100 border-none shadow-2xl min-w-45"
+                >
                     {filters.map((item) => (
                         <DropdownMenuItem
                             key={item.value}
+                            className="rounded-lg cursor-pointer focus:bg-zinc-800 focus:text-white py-2.5 px-3 text-sm transition-colors"
                             onClick={() => onFilterSelect?.(item.value)}
-                        >{item.label}</DropdownMenuItem>
+                        >
+                            {item.label}
+                        </DropdownMenuItem>
                     ))}
                 </DropdownMenuContent>
             </DropdownMenu>

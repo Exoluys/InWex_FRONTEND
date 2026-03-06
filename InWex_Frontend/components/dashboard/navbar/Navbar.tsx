@@ -1,19 +1,12 @@
 "use client"
 
-import { Button } from "../../ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "../../ui/avatar"
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuTrigger,
 } from "../../ui/dropdown-menu"
-import {
-    Card,
-    CardHeader,
-    CardContent,
-} from "../../ui/card"
 import { useAuth } from "@/contexts/AuthContext"
-import { MessageSquareMore } from "lucide-react"
 import NotificationBell from "./NotificationBell"
 
 interface NavbarProps {
@@ -32,51 +25,53 @@ const Navbar = ({ leftContent }: NavbarProps) => {
     if (!user) return null
 
     return (
-        <div className="flex items-center justify-between w-full px-4">
-            <div className="flex-1">{leftContent}</div>
+        <div className="flex items-center justify-between w-full px-6 py-4 bg-black/50 backdrop-blur-md">
+            <div className="flex-1 text-white">{leftContent}</div>
 
-            <div className="flex items-center gap-3">
-                <Button variant="secondary" size="icon">
-                    <MessageSquareMore className="h-4 w-4" />
-                </Button>
+            <div className="flex items-center gap-2">
 
                 <NotificationBell />
 
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <Avatar className="h-9 w-9 cursor-pointer">
-                            <AvatarImage src={user.avatar} />
-                            <AvatarFallback>
-                                {user.fullname?.slice(0, 2).toUpperCase() || "U"}
-                            </AvatarFallback>
-                        </Avatar>
+                        <div className="flex items-center pl-2 cursor-pointer">
+                            <Avatar className="h-10 w-10 transition-all">
+                                <AvatarImage src={user.avatar} className="object-cover" />
+                                <AvatarFallback className="bg-zinc-900 text-zinc-400 font-black text-xs">
+                                    {user.fullname?.slice(0, 2).toUpperCase() || "U"}
+                                </AvatarFallback>
+                            </Avatar>
+                        </div>
                     </DropdownMenuTrigger>
 
-                    <DropdownMenuContent align="end" className="p-0">
-                        <Card className="w-72 border-none shadow-none">
-                            <CardHeader className="flex flex-row items-center gap-3">
-                                <Avatar className="h-10 w-10">
+                    <DropdownMenuContent
+                        align="end"
+                        sideOffset={12}
+                        className="w-80 p-0 bg-zinc-950 border border-zinc-900 rounded-2xl shadow-2xl overflow-hidden"
+                    >
+                        <div className="p-5 bg-zinc-900/30">
+                            <div className="flex items-center gap-4">
+                                <Avatar className="h-12 w-12">
                                     <AvatarImage src={user.avatar} />
-                                    <AvatarFallback>
-                                        {user.fullname?.slice(0, 2).toUpperCase() || "U"}
+                                    <AvatarFallback className="bg-zinc-800 text-zinc-500 font-black">
+                                        {user.fullname?.slice(0, 2).toUpperCase()}
                                     </AvatarFallback>
                                 </Avatar>
-
-                                <div>
-                                    <p className="text-sm font-medium">{user.fullname}</p>
-                                    <p className="text-xs text-muted-foreground">
-                                        {user.email}
-                                    </p>
+                                <div className="min-w-0">
+                                    <p className="text-sm font-black text-white truncate">{user.fullname}</p>
+                                    <p className="text-[11px] font-bold text-zinc-500 truncate uppercase tracking-tight">{user.email}</p>
                                 </div>
-                            </CardHeader>
+                            </div>
+                        </div>
 
-                            <CardContent className="text-sm">
-                                <div className="flex justify-between">
-                                    <span className="text-muted-foreground">Role</span>
-                                    <span className="font-medium">{userRole}</span>
-                                </div>
-                            </CardContent>
-                        </Card>
+                        <div className="p-4 border-t border-zinc-900 space-y-3">
+                            <div className="flex justify-between items-center bg-zinc-900/50 p-3 rounded-xl">
+                                <span className="text-[10px] font-black uppercase tracking-widest text-zinc-500">Access Level</span>
+                                <span className="text-[10px] font-black uppercase tracking-widest text-emerald-500 bg-emerald-500/10 px-2 py-1 rounded-md">
+                                    {userRole}
+                                </span>
+                            </div>
+                        </div>
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>
