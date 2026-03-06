@@ -52,14 +52,14 @@ export const ProductCard = ({ product }: ProductCardProps) => {
                 <div className="flex items-center gap-2 pt-1">
                     <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
                     <p className="text-zinc-400 text-xs font-medium">
-                        Stock: {product.stock || 1} units
+                        Stock: {product.stock?.quantity || 1} units
                     </p>
                 </div>
             </CardContent>
 
             <CardFooter className="px-5 pb-6 pt-2">
                 <Button
-                    onClick={() => (router.push(`/dashboard/inventory/products/${product.id}`))}
+                    onClick={() => (router.push(`/dashboard/inventory/products/${product.slug}`))}
                     className="w-full bg-zinc-800 hover:bg-zinc-700 text-white border-none rounded-xl h-11 font-medium transition-colors"
                     variant="secondary"
                 >

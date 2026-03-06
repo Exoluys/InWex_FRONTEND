@@ -1,7 +1,7 @@
 "use client"
 
 import { WarehouseValues } from "@/lib/schemas/warehouse/addWarehouse.schema"
-import { Product, Section, Warehouse } from "@/lib/types/types"
+import { Product, Section, Stock, Warehouse } from "@/lib/types/types"
 import { createContext, useCallback, useContext, useEffect, useState } from "react"
 import { useAuth } from "./AuthContext"
 import { useRouter } from "next/navigation"
@@ -12,6 +12,7 @@ export type WarehouseContextType = {
     warehouses: Warehouse[]
     sections: Section[]
     products: Product[]
+    stocks: Stock[]
     count: number | null
     isLoading: boolean
     error: string | null
@@ -30,6 +31,7 @@ const WarehouseContext = createContext<WarehouseContextType | undefined>(undefin
 export const WarehouseProvider = ({ children }: { children: React.ReactNode }) => {
     const [warehouses, setWarehouses] = useState<Warehouse[]>([])
     const [sections, setSections] = useState<Section[]>([])
+    const [stocks, setStocks] = useState<Stock[]>([])
     const [products, setProducts] = useState<Product[]>([])
     const [count, setCount] = useState<number | null>(null)
     const [isLoading, setIsLoading] = useState(false)
@@ -45,6 +47,7 @@ export const WarehouseProvider = ({ children }: { children: React.ReactNode }) =
         try {
             const res = await api.get("/warehouse/warehouse")
             setWarehouses(res.data.results)
+            setStocks(res.data.results.stock)
             setCount(res.data.count)
         }
         catch (err) {
@@ -71,7 +74,7 @@ export const WarehouseProvider = ({ children }: { children: React.ReactNode }) =
 
         try {
             const res = await api.get(`api/warehouse/get-warehouse-products?warehouse_id=${warehouseId}`)
-            setProducts(res.data)
+            setProducts(res.data.results)
         }
         catch (err) {
             setError(err instanceof Error ? err.message : "An error occurred")
@@ -132,6 +135,7 @@ export const WarehouseProvider = ({ children }: { children: React.ReactNode }) =
                 warehouses,
                 sections,
                 products,
+                stocks,
                 count,
                 isLoading,
                 error,

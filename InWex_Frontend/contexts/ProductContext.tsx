@@ -17,7 +17,8 @@ type ProductContextType = {
     count: number | null
     isLoading: boolean
     error: string | null
-    fetchProducts: (showLoading?: boolean, url?: string) => Promise<void>
+    fetchProducts: (showLoading: boolean, url?: string) => Promise<void>
+    fetchProductBySlug: (showLoading: boolean, slug: string) => Promise<void>
     fetchCategory: () => Promise<void>
     addProduct: (product: ProductValues) => Promise<void>
     updateProduct: (productId: number, updatedProduct: UpdateProductPayload) => Promise<void>
@@ -92,6 +93,22 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
         }
     }, [])
 
+    const fetchProductBySlug = useCallback(async (showLoading = true, slug: string) => {
+        if (showLoading) setIsLoading(true)
+        setError(null)
+
+        try {
+            const res = await api.get(`/products/get-product?slug=${slug}`)
+            setSelectedProduct(res.data)
+        }
+        catch (err) {
+            setError(err instanceof Error ? err.message : "An error occurred")
+        }
+        finally {
+            if (showLoading) setIsLoading(false)
+        }
+    }, [])
+
     const fetchCategory = useCallback(async () => {
         try {
             const res = await api.get('/products/get-categories')
@@ -105,6 +122,14 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
     useEffect(() => {
         if (!user) {
             setProducts([])
+            setCategories([])
+            setCount(null)
+            setPagination({
+                next: null,
+                prev: null,
+                total_pages: null,
+                current_page: 1
+            })
             setError(null)
         }
     }, [user])
@@ -168,6 +193,7 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
                 isLoading,
                 error,
                 fetchProducts,
+                fetchProductBySlug,
                 fetchCategory,
                 addProduct,
                 updateProduct,

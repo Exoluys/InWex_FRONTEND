@@ -5,13 +5,18 @@ import Navbar from "@/components/dashboard/navbar/Navbar"
 import { Card, CardContent } from "@/components/ui/card"
 import { useProduct } from "@/contexts/ProductContext"
 import { Loader2, Package } from "lucide-react"
-import { use } from "react"
+import { use, useEffect } from "react"
 
-const Page = ({ params }: { params: Promise<{ id: number }> }) => {
-    const { id } = use(params)
-    const { products, categories, isLoading } = useProduct()
-    const product = products.find(p => p.id === Number(id))
+const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
+    const { slug } = use(params)
+    const { products, categories, isLoading, fetchProducts, fetchCategory } = useProduct()
+    const product = products.find(p => p.slug === String(slug))
     const category = categories.find(c => c.id === Number(product?.category))
+
+    useEffect(() => {
+        if (products.length === 0) fetchProducts(true)
+        if (categories.length === 0) fetchCategory()
+    }, [products.length, categories.length, fetchProducts, fetchCategory])
 
     if (isLoading) return (
         <div className="flex justify-center items-center h-screen">

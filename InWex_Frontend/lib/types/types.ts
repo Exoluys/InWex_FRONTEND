@@ -16,6 +16,7 @@ export type UserData = {
 export type Product = {
     id: number
     name: string
+    slug: string
     sku: string
     description: string
     unit_of_measure: string
@@ -23,10 +24,10 @@ export type Product = {
     cost_price: string
     selling_price: string
     image: string
-    stock: number
+    stock: Stock
     created_at: string
     updated_at: string
-    category: string
+    category: Category
     owner: number
     status: string
 }
@@ -35,6 +36,11 @@ export type Category = {
     id: number
     name: string
     description: string
+}
+
+export type Stock = {
+    id: number
+    quantity: number
 }
 
 export type Warehouse = {

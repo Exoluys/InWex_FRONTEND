@@ -126,17 +126,17 @@ const WarehousePage = ({ warehouse }: { warehouse: Warehouse }) => {
                                     <Package size={20} className="text-zinc-500" /> Inventory
                                 </h2>
                                 <Badge className="bg-zinc-900 text-zinc-400 border-zinc-800 rounded-full">
-                                    {products.length}
+                                    {products.length ?? 0}
                                 </Badge>
                             </div>
 
                             <div className="space-y-2 max-h-125 overflow-y-auto pr-2">
                                 {products.length > 0 ? (
                                     products.map((product) => (
-                                        <div
+                                        < div
                                             key={product.id}
                                             className="flex items-center justify-between p-3 bg-zinc-900/30 rounded-xl hover:bg-zinc-900/50 transition-all cursor-pointer group border border-transparent hover:border-zinc-800"
-                                            onClick={() => router.push(`/dashboard/inventory/products/${product.id}`)}
+                                            onClick={() => router.push(`/dashboard/inventory/products/${product.slug}`)}
                                         >
                                             <div className="flex items-center gap-3 min-w-0">
                                                 <div className="bg-zinc-800 p-1.5 rounded-lg text-zinc-500 group-hover:text-white transition-colors shrink-0">
@@ -147,7 +147,7 @@ const WarehousePage = ({ warehouse }: { warehouse: Warehouse }) => {
                                                 </span>
                                             </div>
                                             <div className="text-right shrink-0">
-                                                <span className="text-xs font-bold text-white block">{product.stock ?? 1}</span>
+                                                <span className="text-xs font-bold text-white block">{product.stock?.quantity || 1}</span>
                                                 <span className="text-[10px] text-zinc-600 uppercase font-bold tracking-tighter">qty</span>
                                             </div>
                                         </div>
@@ -161,9 +161,9 @@ const WarehousePage = ({ warehouse }: { warehouse: Warehouse }) => {
                             </div>
                         </div>
                     </aside>
-                </div>
+                </div >
             )}
-        </div>
+        </div >
     )
 }
 
