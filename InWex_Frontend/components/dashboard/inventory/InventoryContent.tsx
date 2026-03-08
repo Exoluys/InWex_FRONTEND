@@ -8,7 +8,7 @@ import SearchbarWithFilter from "@/components/ui/SearchbarWithFilter"
 import { useProduct } from "@/contexts/ProductContext"
 import { AlertTriangle, ChevronDown, Package, Plus } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import {
     Pagination,
     PaginationContent,
@@ -18,9 +18,12 @@ import {
     PaginationPrevious,
 } from "@/components/ui/pagination"
 import { ProductCardShimmer } from "./ProductCardShimmer"
+import { BrowserMultiFormatReader } from '@zxing/library'
+import { api } from "@/lib/api"
 
 const InventoryContent = () => {
     const [selected, setSelected] = useState("Product")
+    const [showScanner, setShowScanner] = useState(false)
     const { products, count, isLoading, error, fetchProducts, fetchCategory, goToPage, goToNextPage, goToPrevPage, hasNext, hasPrev, total_pages, current_page } = useProduct()
     const router = useRouter()
 
@@ -37,6 +40,29 @@ const InventoryContent = () => {
         fetchProducts(true)
         fetchCategory()
     }, [fetchProducts, fetchCategory])
+
+    const videoRef = useRef(null)
+
+    useEffect(() => {
+        if (!showScanner || !videoRef.current) return
+
+        const codeReader = new BrowserMultiFormatReader()
+
+        codeReader.decodeFromVideoDevice(null, videoRef.current, async (result) => {
+            if (result) {
+                codeReader.reset()
+                const barcode = result.getText()
+
+                const res = await api.get(`/products/get-product-from-barcode?barcode=${barcode}`)
+                router.push(`/dashboard/inventory/products/${res.data.slug}`)
+            }
+        })
+
+        return () => {
+            codeReader.reset()
+        }
+    }, [router, showScanner])
+
 
     return (
         <main className="mt-8 md:mt-12 w-full px-4 sm:px-6 md:px-10 pb-8">
@@ -69,6 +95,10 @@ const InventoryContent = () => {
                         onFilterSelect={(value) => console.log("Products filter:", value)}
                     />
                 </div>
+
+                <Button onClick={() => setShowScanner(true)}>
+                    Scan Barcode
+                </Button>
 
                 <div className="flex items-center gap-3 shrink-0 self-end md:self-auto">
                     <p className="text-zinc-500 text-sm font-medium whitespace-nowrap hidden sm:block">Group By:</p>
@@ -176,6 +206,20 @@ const InventoryContent = () => {
                         </div>
                     )}
                 </>
+            )}
+
+            {showScanner && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
+                    <div className="relative">
+                        <video ref={videoRef} className="rounded-xl w-80 h-60" />
+                        <Button
+                            onClick={() => setShowScanner(false)}
+                            className="absolute top-2 right-2"
+                        >
+                            Close
+                        </Button>
+                    </div>
+                </div>
             )}
         </main>
     )
