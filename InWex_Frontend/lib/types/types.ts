@@ -27,7 +27,7 @@ export type Product = {
     stock: Stock
     created_at: string
     updated_at: string
-    category: Category
+    category: string
     owner: number
     status: string
 }
