@@ -7,6 +7,7 @@ export type Roles = {
 
 export type UserData = {
     id: number
+    avatar: string
     fullname: string
     email: string
     contact_number: number
