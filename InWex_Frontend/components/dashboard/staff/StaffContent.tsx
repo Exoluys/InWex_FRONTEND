@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button"
 import SearchbarWithFilter from "@/components/ui/SearchbarWithFilter"
 import { useStaff } from "@/contexts/StaffContext"
-import { Loader2, Phone, Plus, UserRound, ChevronRight, Users } from "lucide-react"
+import { Loader2, Phone, UserRound, ChevronRight, Users } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
 
@@ -35,14 +35,6 @@ const StaffContent = () => {
                         onFilterSelect={(value) => console.log("Warehouse filter:", value)}
                     />
                 </div>
-
-                <Button
-                    onClick={() => router.push("/dashboard/staff/new")}
-                    className="w-full md:w-auto bg-white hover:bg-zinc-200 text-black font-medium px-12 py-6 rounded-xl transition-all hover:scale-[1.02] active:scale-[0.98]"
-                >
-                    <Plus className="mr-2 h-5 w-5 stroke-3" />
-                    Add New Staff
-                </Button>
             </div>
 
             {isLoading && (

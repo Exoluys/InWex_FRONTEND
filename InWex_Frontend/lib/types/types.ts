@@ -6,11 +6,22 @@ export type Roles = {
 }
 
 export type UserData = {
+    id: number
     fullname: string
     email: string
-    avatar: string
     contact_number: number
     roles: Roles
+}
+
+export type Users = {
+    id: number
+    slug: string
+    fullname: string
+    email: string
+    contact_number: number
+    user_status: string
+    is_warehouse_staff: boolean
+    is_manager: boolean
 }
 
 export type Product = {
@@ -64,5 +75,5 @@ export type Staff = {
     warehouse: number
     sections: number
     is_confirmed: boolean
-    user: UserData
+    user: Users
 }
