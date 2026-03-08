@@ -1,4 +1,4 @@
-import { Product, Stock } from "./types"
+import { Product } from "./types"
 
 export type KPICardProps = {
     title: string
@@ -8,8 +8,8 @@ export type KPICardProps = {
 }
 
 export type LowStockItem = {
-    id: Stock
-    quantity: Stock
+    id: number
+    quantity: number
     reorder_point: number
     reorder_quantity: number
     last_updated: string
