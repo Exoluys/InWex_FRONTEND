@@ -9,14 +9,13 @@ import { use, useEffect } from "react"
 
 const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
     const { slug } = use(params)
-    const { products, categories, isLoading, fetchProducts, fetchCategory } = useProduct()
-    const product = products.find(p => p.slug === String(slug))
-    const category = categories.find(c => c.id === Number(product?.category))
+    const { selectedProduct, categories, isLoading, fetchProductBySlug, fetchCategory } = useProduct()
+    const category = categories.find(c => c.id === Number(selectedProduct?.category))
 
     useEffect(() => {
-        if (products.length === 0) fetchProducts(true)
+        fetchProductBySlug(true, slug)
         if (categories.length === 0) fetchCategory()
-    }, [products.length, categories.length, fetchProducts, fetchCategory])
+    }, [slug, categories.length, fetchCategory, fetchProductBySlug])
 
     if (isLoading) return (
         <div className="flex justify-center items-center h-screen">
@@ -34,7 +33,7 @@ const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
         </div>
     )
 
-    if (!product) return (
+    if (!selectedProduct) return (
         <div className="flex justify-center items-center h-screen">
             <Card className="bg-transparent w-full max-w-sm border-none">
                 <CardContent className="flex flex-col items-center gap-4 py-10 text-center">
@@ -69,7 +68,7 @@ const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
     return (
         <>
             <Navbar />
-            <ProductPage product={product} category={category} />
+            <ProductPage product={selectedProduct} category={category} />
         </>
     )
 }

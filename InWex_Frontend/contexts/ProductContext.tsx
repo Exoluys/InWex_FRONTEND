@@ -98,7 +98,7 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
         setError(null)
 
         try {
-            const res = await api.get(`/products/get-product?slug=${slug}`)
+            const res = await api.get(`/api/warehouse/get-product?slug=${slug}`)
             setSelectedProduct(res.data)
         }
         catch (err) {
