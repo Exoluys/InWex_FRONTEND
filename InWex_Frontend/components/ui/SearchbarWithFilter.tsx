@@ -13,9 +13,10 @@ type FilterItem = {
 type SearchbarProps = {
     filters: FilterItem[]
     onFilterSelect?: (value: string) => void
+    onSearch?: (value: string) => void
 }
 
-const SearchbarWithFilter = ({ filters, onFilterSelect }: SearchbarProps) => {
+const SearchbarWithFilter = ({ filters, onFilterSelect, onSearch }: SearchbarProps) => {
     return (
         <div className="flex gap-3 md:gap-5 items-center w-full">
 
@@ -23,6 +24,7 @@ const SearchbarWithFilter = ({ filters, onFilterSelect }: SearchbarProps) => {
                 <InputGroupInput
                     placeholder="Search"
                     className="placeholder:text-zinc-600 text-zinc-100 bg-transparent"
+                    onChange={(e) => onSearch?.(e.target.value)}
                 />
                 <InputGroupAddon>
                     <Search className="h-5! w-5! text-zinc-600" />

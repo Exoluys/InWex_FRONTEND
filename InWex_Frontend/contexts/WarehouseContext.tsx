@@ -19,6 +19,7 @@ export type WarehouseContextType = {
     fetchWarehouses: (showLoading?: boolean) => Promise<void>
     fetchSections: (warehouseId: number) => Promise<void>
     fetchProducts: (warehouseId: number, showLoading?: boolean) => Promise<void>
+    fetchWarehouseBySearch: (query: string, showLoading?: boolean) => Promise<void>
     addWarehouse: (data: WarehouseValues) => Promise<void>
     updateWarehouse: (id: number, data: Partial<Warehouse>) => Promise<void>
     deleteWarehouse: (id: number) => Promise<void>
@@ -75,6 +76,20 @@ export const WarehouseProvider = ({ children }: { children: React.ReactNode }) =
         try {
             const res = await api.get(`api/warehouse/get-warehouse-products?warehouse_id=${warehouseId}`)
             setProducts(res.data.results)
+        }
+        catch (err) {
+            setError(err instanceof Error ? err.message : "An error occurred")
+        }
+        finally {
+            if (showLoading) setIsLoading(false)
+        }
+    }, [])
+
+    const fetchWarehouseBySearch = useCallback(async (query: string, showLoading = true) => {
+        if (showLoading) setIsLoading(true)
+        try {
+            const res = await api.get(`/api/warehouse/warehouses-search?name=${query}`)
+            setWarehouses(res.data)
         }
         catch (err) {
             setError(err instanceof Error ? err.message : "An error occurred")
@@ -142,6 +157,7 @@ export const WarehouseProvider = ({ children }: { children: React.ReactNode }) =
                 fetchWarehouses,
                 fetchSections,
                 fetchProducts,
+                fetchWarehouseBySearch,
                 addWarehouse,
                 updateWarehouse,
                 deleteWarehouse,

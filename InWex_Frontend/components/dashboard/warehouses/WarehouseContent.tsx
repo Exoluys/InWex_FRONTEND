@@ -6,14 +6,23 @@ import { useWarehouse } from "@/contexts/WarehouseContext"
 import { Loader2, Plus, Warehouse, ChevronRight, WarehouseIcon } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
+import { useDebouncedCallback } from "use-debounce"
 
 const WarehouseContent = () => {
     const router = useRouter()
-    const { warehouses, isLoading, error, fetchWarehouses, count } = useWarehouse()
+    const { warehouses, isLoading, error, count, fetchWarehouses, fetchWarehouseBySearch } = useWarehouse()
 
     useEffect(() => {
         fetchWarehouses(true)
     }, [fetchWarehouses])
+
+    const handleSearch = useDebouncedCallback(async (value: string) => {
+        if (!value.trim()) {
+            fetchWarehouses(true)
+            return
+        }
+        fetchWarehouseBySearch(value)
+    }, 300)
 
     return (
         <main className="mt-12 w-full px-4 md:px-10">
@@ -32,6 +41,7 @@ const WarehouseContent = () => {
                             { label: "Warehouse Name", value: "name" },
                         ]}
                         onFilterSelect={(value) => console.log("Warehouse filter:", value)}
+                        onSearch={handleSearch}
                     />
                 </div>
 
