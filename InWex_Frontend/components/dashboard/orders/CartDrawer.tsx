@@ -23,15 +23,10 @@ import { AddOrdersSchema, OrderValues } from "@/lib/schemas/order/addOrders.sche
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormField, FormItem, FormControl, FormMessage } from "@/components/ui/form";
 
-// Replace with your actual products fetch
-const MOCK_PRODUCTS = [
-    { id: 1, name: "Sample Product A", sku: "SKU-12345", unit_of_measure: "Units", selling_price: "499.00" },
-    { id: 2, name: "Sample Product B", sku: "SKU-67890", unit_of_measure: "Units", selling_price: "299.00" },
-];
-
 const CartDrawer = () => {
     const [step, setStep] = useState<"build" | "review">("build");
     const [search, setSearch] = useState("");
+    const {addOrder} = useOrder();
 
     const form = useForm<OrderValues>({
         resolver: zodResolver(AddOrdersSchema),
@@ -74,8 +69,9 @@ const CartDrawer = () => {
         }
     };
 
-    const onSubmit = (data: OrderValues) => {
-        console.log("Submitting:", data);
+    const onSubmit = async(data: OrderValues) => {
+        await addOrder(data);
+        form.reset();
     };
 
     return (
