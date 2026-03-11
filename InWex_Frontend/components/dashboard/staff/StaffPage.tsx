@@ -128,7 +128,6 @@ const StaffPage = ({ staff }: { staff: Staff }) => {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
-                {/* Profile Card... (Same as before) */}
                 <Card className="lg:col-span-1 bg-zinc-950 border-none rounded-[2.5rem] overflow-hidden flex flex-col pb-0 h-full shadow-2xl">
                     <div className="aspect-square bg-zinc-900/20 flex items-center justify-center p-10 shrink-0 relative">
                         <div className="w-32 h-32 rounded-full bg-zinc-900 flex items-center justify-center border-4 border-zinc-950 shadow-xl relative overflow-hidden">

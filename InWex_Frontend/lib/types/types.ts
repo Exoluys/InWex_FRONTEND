@@ -78,3 +78,19 @@ export type Staff = {
     is_confirmed: boolean
     user: Users
 }
+
+export type Orders = {
+    id: number
+    order_type: "Inbound" | "Outbound"
+    status: "Requested" | "In_Progress" | "Delivered" | "Returned" | "Cancelled"
+    notes: string
+    created_at: string
+    items: OrderItems[]
+}
+
+export type OrderItems = {
+    id: number
+    product: number
+    quantity: number
+    unit_price: string
+} 

@@ -38,6 +38,7 @@ const ProductContext = createContext<ProductContextType | undefined>(undefined)
 
 export const ProductProvider = ({ children }: { children: React.ReactNode }) => {
     const [products, setProducts] = useState<Product[]>([])
+    const [categories, setCategories] = useState<Category[]>([])
     const [pagination, setPagination] = useState({
         next: null as string | null,
         prev: null as string | null,
@@ -45,7 +46,6 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
         current_page: 1
     })
     const [count, setCount] = useState<number | null>(null)
-    const [categories, setCategories] = useState<Category[]>([])
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const { user } = useAuth()

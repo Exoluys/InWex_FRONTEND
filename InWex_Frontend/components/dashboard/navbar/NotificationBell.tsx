@@ -5,6 +5,7 @@ import { useEffect, useState } from "react"
 import ws from "@/lib/socket"
 import { api } from "@/lib/api"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu"
+import { Button } from "@/components/ui/button"
 
 const NotificationBell = () => {
     const [notifications, setNotifications] = useState<{ id: number, title: string, message: string, created_at: string, is_read: boolean }[]>([])
@@ -33,12 +34,15 @@ const NotificationBell = () => {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <button className="relative p-3 bg-zinc-900/50 hover:bg-zinc-900 border-none rounded-xl transition-all group outline-none">
+                <Button
+                    variant="ghost"
+                    className="relative p-3 bg-zinc-900/50 hover:bg-zinc-900 border-none rounded-xl transition-all group outline-none h-auto"
+                >
                     <Bell className="h-4 w-4 text-zinc-500 group-hover:text-white transition-colors" />
                     {unreadCount > 0 && (
                         <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]" />
                     )}
-                </button>
+                </Button>
             </DropdownMenuTrigger>
 
             <DropdownMenuContent

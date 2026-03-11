@@ -77,7 +77,7 @@ const bodyRow = "border-0 hover:bg-white/5 [&>td]:py-5"
 
 export const OrdersTable = () => {
     return (
-        <div className="mt-12 rounded-2xl bg-[#1E1E1E] overflow-hidden">
+        <div className="mt-6 rounded-2xl bg-[#1E1E1E] overflow-hidden">
             <Table className="border-collapse border-0">
                 <TableHeader>
                     <TableRow className="bg-[#181818] hover:bg-[#181818]">

@@ -2,23 +2,24 @@
 
 
 import Navbar from "@/components/dashboard/navbar/Navbar";
+import CartDrawer from "@/components/dashboard/orders/CartDrawer";
 import { OrdersTable } from "@/components/dashboard/orders/OrdersTable";
 import { StatusCard } from "@/components/dashboard/orders/StatusCard"
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import Searchbar from "@/components/ui/SearchbarWithFilter";
-import { Plus, SlidersHorizontal, Upload } from "lucide-react";
+import { SlidersHorizontal, Upload } from "lucide-react";
+
+type Trend = "up" | "down";
+
+type StatusCardData = {
+    title: string;
+    value: number;
+    percentage: number;
+    trend: Trend;
+};
 
 const Orders = () => {
-    type Trend = "up" | "down";
-
-    type StatusCardData = {
-        title: string;
-        value: number;
-        percentage: number;
-        trend: Trend;
-    };
-
     const cardsContent: StatusCardData[] = [
         {
             title: "New Orders",
@@ -53,6 +54,11 @@ const Orders = () => {
     return (
         <>
             <Navbar leftContent={navbarLeftContent} />
+
+            <div className="fixed top-14 right-53 z-30">
+                <CartDrawer />
+            </div >
+
             <main className="mt-12">
                 <div className="flex flex-wrap gap-15">
                     {cardsContent.map((content) => (
@@ -94,12 +100,6 @@ const Orders = () => {
                                     <DropdownMenuItem>Price: Low to High</DropdownMenuItem>
                                 </DropdownMenuContent>
                             </DropdownMenu>
-
-                            <Button className="gap-2 py-5! px-3! cursor-pointer">
-                                <Plus className="h-4 w-4" />
-                                Add Orders
-                            </Button>
-
                         </div>
                     </div>
                 </div>
