@@ -1,0 +1,85 @@
+"use client"
+
+import { api } from "@/lib/api"
+import { Roles, UserData } from "@/lib/types/types"
+import axios from "axios"
+import { useRouter } from "next/navigation"
+import { createContext, useCallback, useContext, useState, useEffect } from "react"
+import { toast } from "sonner"
+
+type AuthContextType = {
+    user: UserData | null
+    role: Roles | null
+    isLoading: boolean
+    login: (userData: UserData, token: string) => void
+    logout: () => void
+}
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined)
+
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+    const [user, setUser] = useState<UserData | null>(null)
+    const [isLoading, setIsLoading] = useState(true)
+    const router = useRouter()
+
+    useEffect(() => {
+        try {
+            const stored = localStorage.getItem("UserData")
+            if (stored) {
+                setUser(JSON.parse(stored))
+            }
+        } catch (error) {
+            console.error("Error parsing user data:", error)
+        } finally {
+            setIsLoading(false)
+        }
+    }, [])
+
+    const login = useCallback((userData: UserData, token: string) => {
+        localStorage.setItem("UserData", JSON.stringify(userData))
+        localStorage.setItem("token", token)
+        setUser(userData)
+    }, [])
+
+    const logout = useCallback(async () => {
+        try {
+            await api.post("/accounts/logout")
+        }
+        catch (error) {
+            if (axios.isAxiosError(error)) {
+                toast.error(error.response?.data?.detail || "Logout Failed")
+            }
+            else {
+                toast.error("Unexpected error occurred")
+            }
+        }
+        finally {
+            localStorage.removeItem("UserData")
+            localStorage.removeItem("token")
+            setUser(null)
+            router.push("/auth")
+        }
+    }, [router])
+
+    return (
+        <AuthContext.Provider
+            value={{
+                user,
+                role: user?.roles || null,
+                isLoading,
+                login,
+                logout
+            }}
+        >
+            {children}
+        </AuthContext.Provider>
+    )
+}
+
+export const useAuth = () => {
+    const context = useContext(AuthContext)
+    if (context === undefined) {
+        throw new Error("useAuth must be used within an AuthProvider")
+    }
+    return context
+}
